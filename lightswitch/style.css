@@ -1,0 +1,33 @@
+html {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+body {
+  transition: background-color 1s ease-in-out;
+  background-color: snow;
+}
+
+.body-dark {
+  transition: background-color 1s ease-in-out;
+  background: #111;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  cursor: pointer;
+  background: transparent;
+  margin-top: 25vh;
+  padding: 2rem 3rem;
+  font-size: 2rem;
+  border: 5px solid #000;
+  border-radius: 20px;
+}
+button.dark {
+  background: #000;
+  color: #fff;
+  box-shadow: 0px 0px 85px 35px rgba(5, 237, 237, 0.9);
+}
