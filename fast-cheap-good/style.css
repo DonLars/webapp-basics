@@ -1,0 +1,63 @@
+/* Style for Fast Cheap Good Chooser
+========================================================================== */
+
+html,
+body {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+main {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  flex-direction: column;
+}
+
+section {
+  min-width: 15vw;
+  display: flex;
+  justify-content: space-between;
+  font-family: monospace;
+}
+
+label {
+  font-size: 1.25rem;
+  margin-top: 0.75rem;
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  color: currentColor;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.25rem;
+  background: dodgerblue;
+  display: grid;
+  place-content: center;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.75rem;
+  height: 0.75rem;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  background-color: white;
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(2);
+}
+
+input[type="checkbox"]:focus {
+  outline: 0.15rem solid dodgerblue;
+  outline-offset: 0.15rem;
+}
