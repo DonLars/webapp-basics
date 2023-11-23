@@ -1,4 +1,4 @@
-"use strict";
+//"use strict";
 
 // Selektiere die Checkboxen mit den entsprechenden IDs
 const fastCheckbox = document.querySelector("#fast");
