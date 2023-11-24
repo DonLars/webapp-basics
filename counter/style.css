@@ -5,6 +5,10 @@ body {
   font-family: monospace;
 }
 
+::selection {
+  background: #fff;
+}
+
 /*    HEADER
 ========================================================================== */
 
