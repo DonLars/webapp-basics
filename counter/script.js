@@ -1,26 +1,34 @@
 "use strict";
+// Zuweisung der Variablen für Stellen im DOM
+const main = document.querySelector("main");
+const counter = document.querySelector(".counter");
+const items = document.querySelectorAll("section.item");
 
-// Add a larger counter number
+// Zuweisung eines unabhängigen Zählers
+let current = 0;
 
-let counter = 0;
-let divider = 100;
+// Klick-Event-Listener reagiert auf Klick auf "Main"
+main.addEventListener("click", isMainClicked);
 
-let counterBar = document.querySelector(".counter");
+// Funktion, wenn man auf "Main" klickt
+function isMainClicked() {
+  // Der Counter, der im HTML auf 0 steht, rechnet +1
+  counter.innerHTML++;
 
-counterBar.innerHTML = "xxx";
+  // Fügt die Klasse "active" zum aktuellen Element hinzu (aktueller Zähler)
+  items[current].classList.add("active");
 
-for(let i = 0; i ) {
-    
+  // Erhöhe den Zähler für das nächste Element
+  current++;
+
+  // Wenn current größer oder gleich der Anzahl der Elemente entferne die Klasse "active"
+  if (current >= items.length) {
+    items.forEach((item) => {
+      item.classList.remove("active");
+    });
+
+    // Am Ende setze current auf 0
+    console.log(current);
+    current = 0;
+  }
 }
-/*
- The number is increased every time you
-    - click the main area of the website
-    - press the enter or space key
- */
-
-// Add a reset button that will reset the number to 0
-
-/*Change the color of the main area behind your counter step by step everytime the counter 
- is increased 100 counting steps will turn the background fully colorful*/
-
-// After every 100 counting steps reset the background (see video)
