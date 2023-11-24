@@ -3,7 +3,20 @@
 const main = document.querySelector("main");
 const counter = document.querySelector(".counter");
 const items = document.querySelectorAll("section.item");
+const resetBtn = document.getElementById("reset");
 
+//console.log(resetBtn);
+
+resetBtn.addEventListener("click", clearAll);
+
+function clearAll() {
+  console.log("clear");
+  current = 0;
+  counter.innerHTML = 0;
+  items.forEach((item) => {
+    item.classList.remove("active");
+  });
+}
 // Zuweisung eines unabhängigen Zählers
 let current = 0;
 
@@ -28,7 +41,6 @@ function isMainClicked() {
     });
 
     // Am Ende setze current auf 0
-    console.log(current);
     current = 0;
   }
 }
