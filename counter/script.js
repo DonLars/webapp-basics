@@ -5,8 +5,6 @@ const counter = document.querySelector(".counter");
 const items = document.querySelectorAll("section.item");
 const resetBtn = document.getElementById("reset");
 
-//console.log(resetBtn);
-
 resetBtn.addEventListener("click", clearAll);
 
 function clearAll() {
