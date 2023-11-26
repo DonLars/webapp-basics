@@ -1,0 +1,99 @@
+/* Variables*/
+:root {
+  --front-color: white;
+  --gradient1-color: #8e2de2;
+  --gradient2-color: #4a00e0;
+}
+
+html,
+body {
+  box-sizing: border-box;
+  background: linear-gradient(
+    to right,
+    var(--gradient1-color),
+    var(--gradient2-color)
+  );
+  color: var(--front-color);
+  font-family: monospace;
+  height: 100vh;
+}
+
+h1,
+h2 {
+  font-weight: normal;
+  font-size: 4rem;
+  margin-block: 0.5rem 3.5rem;
+  text-align: center;
+}
+h2 {
+  font-size: 3rem;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.todo-article {
+  width: 50vw;
+  padding: 2rem;
+  background: black;
+  border-radius: 1rem;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+form {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+input {
+  border: 5px solid var(--gradient1-color);
+  font-size: 2rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  font-family: monospace;
+}
+
+input:focus {
+  outline: 0;
+  border: 5px solid var(--gradient2-color);
+}
+label {
+  position: absolute;
+  left: -10000px;
+}
+
+button {
+  appearance: none;
+  border: 5px solid var(--gradient2-color);
+  border-radius: 1rem;
+  background: white;
+  font-family: monospace;
+  font-size: 2rem;
+}
+
+button:hover {
+  background: var(--gradient2-color);
+  color: var(--front-color);
+}
+
+#task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#task-list > li {
+  font-size: 2rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  background: var(--gradient2-color);
+}
+
+#task-list > li.done {
+  text-decoration: line-through;
+}

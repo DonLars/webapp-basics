@@ -1,0 +1,20 @@
+/* Styles for todoApp */
+
+html,
+body {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+header {
+  padding: 1rem;
+  background-color: grey;
+}
+main {
+  padding: 1rem;
+  background-color: hotpink;
+}
+footer {
+  padding: 1rem;
+  background: dodgerblue;
+}

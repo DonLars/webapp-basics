@@ -1,20 +1,37 @@
-const inputField = document.getElementById("input");
+"use strict";
+
+const inputDE = document.getElementById("input-de");
+const inputEN = document.getElementById("input-en");
 const output = document.getElementById("output");
-const addForm = document.getElementById("add-form");
+const addForm = document.getElementById("addForm");
 const clearButton = document.getElementById("clear-btn");
 
 // State
-let vocabulary = [];
+
+let vocabulary = [
+  {
+    german: "hallo",
+    english: "goodbye",
+  },
+  {
+    german: "tschüß",
+    english: "good bye",
+  },
+];
+
 function saveVocabulary() {
   localStorage.setItem("vocabulary", JSON.stringify(vocabulary));
 }
 
 function loadVocabulary() {
-  const savedString = localStorage.getItem("vocabulary");
-  if (savedString == null) {
+  const savedItem = localStorage.getItem("vocabulary");
+
+  if (savedItem == null) {
     return;
   }
-  vocabulary = JSON.parse(savedString);
+
+  //console.log("savedItem", savedItem);
+  vocabulary = JSON.parse(savedItem);
 }
 
 // render
@@ -29,26 +46,30 @@ function render() {
 
   for (const word of vocabulary) {
     const listItem = document.createElement("li");
-    listItem.textContent = word.description;
+    listItem.textContent = `${word.german} : ${word.english}`;
+
     output.append(listItem);
   }
 }
 
 // Event Listener
+
 addForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const input = inputField.value;
-  //console.log("Submit", deutsch);
+  const german = inputDE.value;
+  const english = inputEN.value;
+  console.log("Submit", german, english);
 
   // 1. State updaten
   vocabulary.push({
-    description: input,
+    german: german,
+    english: english,
   });
 
   console.log(vocabulary);
 
-  // 2. Rerender triggern
+  //2. Rerender triggern
   onStateChange();
 });
 
@@ -63,3 +84,6 @@ clearButton.addEventListener("click", () => {
 
 loadVocabulary();
 render();
+
+// wenn leer, nicht absenden
+// Einzelne Einträge entfernen

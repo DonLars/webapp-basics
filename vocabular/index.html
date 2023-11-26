@@ -3,22 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vocabular</title>
+    <title>Document</title>
   </head>
   <body>
-    <form action="" id="addForm">
-      <label for="input-de">
-        German
-        <input type="text" name="input-de" id="input-de" />
+    <form id="add-form">
+      <label>
+        Eingabe
+        <input type="text" name="Eingabe" id="input" />
       </label>
-      <label for="input-en">
-        English
-        <input type="text" name="input-en" id="input-en" />
-      </label>
-      <button type="submit">Add vocable</button>
-      <button type="submit" id="clear-btn">Clear</button>
+
+      <button type="submit">Add</button>
     </form>
-    <div id="output"></div>
+    <button id="clear-btn">Clear</button>
+
+    <ul id="output"></ul>
+
     <script src="script.js"></script>
   </body>
 </html>
