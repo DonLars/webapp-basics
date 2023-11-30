@@ -3,32 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TODO APP</title>
+    <title>TODO App</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <main>
-      <article class="todo-article">
+      <div class="todo-container">
         <h1>TODO App</h1>
-        <h2>Getting things done…</h2>
-        <button id="clear-btn">Clear list</button>
-
-        <form id="task-form">
-          <label>New Task:</label>
-          <input
-            type="text"
-            name="Eingabe"
-            id="input"
-            placeholder="Start your list!"
-          />
-
-          <button id="add-btn" type="submit">Add</button>
+        <h2>Getting 0 things done…</h2>
+        <form class="todo-form">
+          <div class="form-wrapper">
+            <input
+              type="text"
+              name="description"
+              placeholder="Start your list!"
+              autofocus
+            />
+            <button type="submit">add</button>
+            <button class="clear-btn">Clear list</button>
+            <select name="todos" class="filter-todo">
+              <option value="all">all todos</option>
+              <option value="completed">Done todos</option>
+              <option value="incomplete">Open todos</option>
+            </select>
+          </div>
         </form>
-
-        <ul id="task-list">
-          <li>First todo</li>
-        </ul>
-      </article>
+        <ul class="todo-list"></ul>
+      </div>
     </main>
     <script src="script.js"></script>
   </body>

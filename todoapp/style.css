@@ -1,8 +1,10 @@
 /* Variables*/
 :root {
-  --front-color: white;
+  --black-color: black;
+  --white-color: white;
   --gradient1-color: #8e2de2;
   --gradient2-color: #4a00e0;
+  --ocker-color: #f1a208;
 }
 
 html,
@@ -13,7 +15,8 @@ body {
     var(--gradient1-color),
     var(--gradient2-color)
   );
-  color: var(--front-color);
+
+  color: var(--white-color);
   font-family: monospace;
   height: 100vh;
 }
@@ -30,24 +33,54 @@ h2 {
 }
 
 main {
-  display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.todo-article {
-  width: 50vw;
+.todo-container {
+  width: 70vw;
+  gap: 1rem;
+  margin: 0 auto;
   padding: 2rem;
-  background: black;
+  background: var(--black-color);
   border-radius: 1rem;
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.2);
 }
 
-form {
+.todo-list {
+  margin: 0;
+  padding: 1rem 0 0 0;
+  width: 100%;
+  list-style: none;
+}
+
+.todo-list [type="checkbox"]:checked ~ span {
+  text-decoration: line-through;
+  font-style: italic;
+  color: var(--gradient1-color);
+  opacity: 0.5;
+}
+
+.task-item {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 1rem;
-  margin-top: 1rem;
+  margin: 1rem 0;
+  padding: 0.5rem;
+  background: linear-gradient(0deg, #ddd 50%, #fff 50%);
+  border-radius: 1rem;
+  border: 5px solid var(--gradient2-color);
+  color: var(--black-color);
+  font-size: 2rem;
+  transition: 0.5s;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
 }
 
 input {
@@ -68,32 +101,94 @@ label {
 }
 
 button {
-  appearance: none;
+  text-transform: uppercase;
   border: 5px solid var(--gradient2-color);
-  border-radius: 1rem;
-  background: white;
+  border-radius: 0.5rem;
+  background: var(--black-color);
+  color: var(--white-color);
   font-family: monospace;
-  font-size: 2rem;
-}
-
-button:hover {
-  background: var(--gradient2-color);
-  color: var(--front-color);
-}
-
-#task-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-#task-list > li {
-  font-size: 2rem;
-  margin: 1rem 0;
   padding: 1rem;
-  border-radius: 0.25rem;
-  background: var(--gradient2-color);
+  font-size: 2rem;
+  cursor: pointer;
+}
+button:hover,
+button:active,
+button:focus,
+select:hover,
+select:active,
+select:focus {
+  border: 5px solid var(--gradient1-color);
 }
 
-#task-list > li.done {
-  text-decoration: line-through;
+.todo-statistics {
+  border-top: 5px solid var(--gradient2-color);
+  padding-top: 2rem;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  border: 5px solid var(--gradient2-color);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  font-size: 2rem;
+  text-transform: uppercase;
+  background: black;
+  color: white;
+  cursor: pointer;
+}
+
+.select {
+  margin: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.select::after {
+  content: "\25BC";
+  position: absolute;
+  background: var(--gradient1-color);
+  top: 0;
+  right: 0;
+  padding: 1rem;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.select:hover::after {
+  background: white;
+  color: var(--gradient1-color);
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  background-color: black;
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  border: 5px solid var(--gradient2-color);
+  border-radius: 0.5em;
+  display: grid;
+  place-content: center;
+  height: 5rem;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  transform: scale(0);
+  transform-origin: bottom left;
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em white;
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
 }

@@ -1,62 +1,110 @@
-"use strict";
-// References > variables
-const inputField = document.getElementById("input");
-const taskList = document.getElementById("task-list");
-const addForm = document.getElementById("task-form");
-const clearButton = document.getElementById("clear-btn");
+/* 
+Todo:
+- Erstes Testelement einfügen
+- Anzahl der offenen Todos
+*/
 
-// Add Button EventListener
-addForm.addEventListener("submit", (event) => {
-  event.preventDefault();
+/*   REFERENCE TO SELECTORS
+========================================================================== */
+const todoForm = document.querySelector(".todo-form"); // Form
+const todoList = document.querySelector(".todo-list"); // dynamic List
+const clearBtn = document.querySelector(".clear-btn"); // clear all
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-  const input = inputField.value;
-  // 1. State updaten
-  tasks.push({
-    description: input,
+if (localStorage.getItem("tasks")) {
+  tasks.map((task) => {
+    createTask(task);
   });
-  // 2. RedisplayTasks triggern
-  savetasks();
-  displayTasks();
-  inputField.value = ""; // leeren des Feldes
+}
+
+/*    SUBMIT FORM
+========================================================================== */
+todoForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const input = todoForm.description;
+  const inputValue = input.value.trim();
+
+  if (inputValue != "") {
+    const task = {
+      id: new Date().getTime(),
+      description: inputValue,
+      isDone: false,
+    };
+
+    tasks.push(task);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    createTask(task);
+    todoForm.reset();
+  }
+  input.focus();
 });
 
-// Clear Button EventListener
-clearButton.addEventListener("click", () => {
-  // 1. State update
+/*    REMOVE TASK Eventlistener
+========================================================================== */
+todoList.addEventListener("click", (e) => {
+  if (
+    e.target.classList.contains("remove-task") ||
+    e.target.parentElement.classList.contains("remove-task")
+  ) {
+    const taskId = e.target.closest("li").id;
+    removeTask(taskId);
+  }
+});
+
+/*    DELETE ALL TASKS
+========================================================================== */
+clearBtn.addEventListener("click", (e) => {
+  todoList.innerHTML = "";
   tasks = [];
-  // 2. RedisplayTasks triggern
-  savetasks();
-  displayTasks();
+  localStorage.removeItem("tasks");
 });
 
-// State, tasks Vorgabe
-let tasks = [{ description: "This is my first todo ..." }];
+// update task - change status or name
+todoList.addEventListener("input", (e) => {
+  const taskId = e.target.closest("li").id;
+  updateTask(taskId, e.target);
+});
 
-// Save Tasks in localstorage
-function savetasks() {
+/*    CREATE TASK FUNCTION 
+========================================================================== */
+function createTask(task) {
+  const taskEl = document.createElement("li");
+  taskEl.setAttribute("id", task.id);
+  taskEl.classList.add("task-item");
+
+  const taskElMarkup = `
+  <div class="checkbox-wrapper">
+    <input type="checkbox" id="${task.description}" name="tasks" ${
+    task.isDone ? "checked" : ""
+  }>
+    <label for="${task.description}"></label>
+    <span class="description">${task.description}</span>
+  </div>
+  <button class="remove-task" title="Remove task">X</button>
+  `;
+  taskEl.innerHTML = taskElMarkup;
+  todoList.appendChild(taskEl);
+}
+
+/*    REMOVE TASK FUNCTION
+========================================================================== */
+function removeTask(taskId) {
+  tasks = tasks.filter((task) => task.id !== parseInt(taskId));
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  document.getElementById(taskId).remove();
+}
+
+/*    UPDATE TASK FUNCTION
+========================================================================== */
+function updateTask(taskId, el) {
+  const task = tasks.find((task) => task.id === parseInt(taskId));
+  const span = el.nextElementSibling.nextElementSibling;
+  task.isDone = !task.isDone;
+  if (task.isDone) {
+    el.setAttribute("checked", "");
+  } else {
+    el.removeAttribute("checked");
+  }
+
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
-
-// Load Tasks from localstorage
-function loadtasks() {
-  const savedString = localStorage.getItem("tasks");
-  if (savedString == null) {
-    return;
-  }
-  tasks = JSON.parse(savedString);
-}
-
-// Display Tasks
-function displayTasks() {
-  taskList.innerHTML = "";
-
-  for (const word of tasks) {
-    const listItem = document.createElement("li");
-    listItem.textContent = word.description;
-    listItem.classList.add("item");
-    taskList.append(listItem);
-  }
-}
-
-loadtasks();
-displayTasks();
