@@ -10,7 +10,7 @@
     <main>
       <div class="todo-container">
         <h1>TODO App</h1>
-        <h2>Getting 0 things done…</h2>
+        <h2>Getting 1 things done…</h2>
         <form class="todo-form">
           <div class="form-wrapper">
             <input
@@ -21,14 +21,42 @@
             />
             <button type="submit">add</button>
             <button class="clear-btn">Clear list</button>
-            <select name="todos" class="filter-todo">
-              <option value="all">all todos</option>
-              <option value="completed">Done todos</option>
-              <option value="incomplete">Open todos</option>
-            </select>
+            <section class="filter-group">
+              <label for="all">All</label>
+              <input
+                type="radio"
+                name="filter"
+                value="all"
+                class="filter-todo"
+              />
+
+              <label for="done">done</label>
+              <input
+                type="radio"
+                name="filter"
+                value="done"
+                class="filter-todo"
+              />
+              <label for="open">open</label>
+              <input
+                type="radio"
+                name="filter"
+                value="open"
+                class="filter-todo"
+              />
+            </section>
           </div>
         </form>
-        <ul class="todo-list"></ul>
+        <ul class="todo-list">
+          <li id="1701371729310" class="task-item">
+            <div class="checkbox-wrapper">
+              <input type="checkbox" id="1701371729310" name="tasks" />
+              <label for="first"></label>
+              <span class="description">My first task 😜</span>
+            </div>
+            <button class="remove-task" title="Remove task">X</button>
+          </li>
+        </ul>
       </div>
     </main>
     <script src="script.js"></script>

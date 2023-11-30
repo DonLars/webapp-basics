@@ -61,6 +61,13 @@ main {
   opacity: 0.5;
 }
 
+.form-wrapper {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .task-item {
   display: flex;
   justify-content: space-between;
@@ -95,10 +102,6 @@ input:focus {
   outline: 0;
   border: 5px solid var(--gradient2-color);
 }
-label {
-  position: absolute;
-  left: -10000px;
-}
 
 button {
   text-transform: uppercase;
@@ -120,15 +123,7 @@ select:focus {
   border: 5px solid var(--gradient1-color);
 }
 
-.todo-statistics {
-  border-top: 5px solid var(--gradient2-color);
-  padding-top: 2rem;
-  margin-top: 2rem;
-  display: flex;
-  justify-content: space-around;
-}
-
-select {
+input[type="radio"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -143,26 +138,8 @@ select {
   cursor: pointer;
 }
 
-.select {
-  margin: 1rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.select::after {
-  content: "\25BC";
-  position: absolute;
-  background: var(--gradient1-color);
-  top: 0;
-  right: 0;
-  padding: 1rem;
-  pointer-events: none;
-  transition: all 0.3s ease;
-}
-
-.select:hover::after {
-  background: white;
-  color: var(--gradient1-color);
+label {
+  color: white;
 }
 
 input[type="checkbox"] {

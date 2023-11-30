@@ -1,32 +1,33 @@
 /* 
 Todo:
-- Erstes Testelement einfügen
-- Anzahl der offenen Todos
+- Anzahl der offenen Todos in Subline
+- Duplicate Check: Do not allow duplicate todo descriptions (i.e. two todos with the description "Learn JavaScript"
+
+
 */
 
 /*   REFERENCE TO SELECTORS
 ========================================================================== */
-const todoForm = document.querySelector(".todo-form"); // Form
-const todoList = document.querySelector(".todo-list"); // dynamic List
-const clearBtn = document.querySelector(".clear-btn"); // clear all
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+const todoForm = document.querySelector(".todo-form"); // complete form
+const todoList = document.querySelector(".todo-list"); // dynamic list
+const clearBtn = document.querySelector(".clear-btn"); // clear all button
+let tasks = JSON.parse(localStorage.getItem("tasks")) || []; // load tasks from local storage OR set a new array
 
+// setting stage
 if (localStorage.getItem("tasks")) {
-  tasks.map((task) => {
-    createTask(task);
-  });
+  tasks.forEach(createTask); // create a new task for every task
 }
 
-/*    SUBMIT FORM
+/*    SUBMIT FORM EVENTLISTENER
 ========================================================================== */
 todoForm.addEventListener("submit", function (e) {
-  e.preventDefault();
+  e.preventDefault(); // no browser refresh after submit
   const input = todoForm.description;
   const inputValue = input.value.trim();
 
   if (inputValue != "") {
     const task = {
-      id: new Date().getTime(),
+      id: new Date().getTime(), // adding timestamp for create an id
       description: inputValue,
       isDone: false,
     };
@@ -34,12 +35,12 @@ todoForm.addEventListener("submit", function (e) {
     tasks.push(task);
     localStorage.setItem("tasks", JSON.stringify(tasks));
     createTask(task);
-    todoForm.reset();
+    input.value = ""; // clear input field
   }
-  input.focus();
+  input.focus(); // Focus on input field
 });
 
-/*    REMOVE TASK Eventlistener
+/*    REMOVE TASK EVENTLISTENER
 ========================================================================== */
 todoList.addEventListener("click", (e) => {
   if (
@@ -51,7 +52,7 @@ todoList.addEventListener("click", (e) => {
   }
 });
 
-/*    DELETE ALL TASKS
+/*    CLEAR ALL TASKS EVENTLISTENER
 ========================================================================== */
 clearBtn.addEventListener("click", (e) => {
   todoList.innerHTML = "";
@@ -65,7 +66,7 @@ todoList.addEventListener("input", (e) => {
   updateTask(taskId, e.target);
 });
 
-/*    CREATE TASK FUNCTION 
+/*    CREATE SINGLE TASK FUNCTION
 ========================================================================== */
 function createTask(task) {
   const taskEl = document.createElement("li");
@@ -73,20 +74,22 @@ function createTask(task) {
   taskEl.classList.add("task-item");
 
   const taskElMarkup = `
-  <div class="checkbox-wrapper">
-    <input type="checkbox" id="${task.description}" name="tasks" ${
+    <div class="checkbox-wrapper">
+      <input type="checkbox" id="${task.description}" name="tasks" ${
     task.isDone ? "checked" : ""
   }>
-    <label for="${task.description}"></label>
-    <span class="description">${task.description}</span>
-  </div>
-  <button class="remove-task" title="Remove task">X</button>
+      <label for="${task.description}"></label>
+      <span class="description ${task.isDone ? "done" : ""}">${
+    task.description
+  }</span>
+    </div>
+    <button class="remove-task" title="Remove task">X</button>
   `;
   taskEl.innerHTML = taskElMarkup;
   todoList.appendChild(taskEl);
 }
 
-/*    REMOVE TASK FUNCTION
+/*    REMOVE SINGLE TASK FUNCTION
 ========================================================================== */
 function removeTask(taskId) {
   tasks = tasks.filter((task) => task.id !== parseInt(taskId));
@@ -94,7 +97,7 @@ function removeTask(taskId) {
   document.getElementById(taskId).remove();
 }
 
-/*    UPDATE TASK FUNCTION
+/*    UPDATE SINGLE TASK FUNCTION
 ========================================================================== */
 function updateTask(taskId, el) {
   const task = tasks.find((task) => task.id === parseInt(taskId));
@@ -105,6 +108,5 @@ function updateTask(taskId, el) {
   } else {
     el.removeAttribute("checked");
   }
-
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
