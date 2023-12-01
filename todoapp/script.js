@@ -106,14 +106,13 @@ function removeTask(taskId) {
 
 /*    UPDATE SINGLE TASK FUNCTION
 ========================================================================== */
-function updateTask(taskId, el) {
+function updateTask(taskId, checkbox) {
   const task = tasks.find((task) => task.id === parseInt(taskId)); // search for the specific ID
-  const span = el.nextElementSibling.nextElementSibling;
   task.isDone = !task.isDone; // toggle the isDone flag
   if (task.isDone) {
-    el.setAttribute("checked", "");
+    checkbox.setAttribute("checked", "");
   } else {
-    el.removeAttribute("checked");
+    checkbox.removeAttribute("checked");
   }
   localStorage.setItem("tasks", JSON.stringify(tasks)); // safe to localStorage
 }
