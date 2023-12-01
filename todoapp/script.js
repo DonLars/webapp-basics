@@ -1,21 +1,22 @@
 /* 
-Todo:
-- Anzahl der offenen Todos in Subline
+TODOS:
+
+- First Todo in start view // { id: 1701371729310, description: "My first task 😜", isDone: false },
+- Add Filtering
 - Duplicate Check: Do not allow duplicate todo descriptions (i.e. two todos with the description "Learn JavaScript"
-
-
+- My Bonus: Count open Todos
 */
 
 /*   REFERENCE TO SELECTORS
 ========================================================================== */
-const todoForm = document.querySelector(".todo-form"); // complete form
-const todoList = document.querySelector(".todo-list"); // dynamic list
-const clearBtn = document.querySelector(".clear-btn"); // clear all button
+const todoForm = document.querySelector(".todo-form"); // reference to complete form
+const todoList = document.querySelector(".todo-list"); // reference to dynamic list
+const clearBtn = document.querySelector(".clear-btn"); // reference to clear all button
 let tasks = JSON.parse(localStorage.getItem("tasks")) || []; // load tasks from local storage OR set a new array
 
-// setting stage
+// Setting stage - displaying existing tasks from local storage
 if (localStorage.getItem("tasks")) {
-  tasks.forEach(createTask); // create a new task for every task
+  tasks.forEach(displayTask); // create a new task for every task
 }
 
 /*    SUBMIT FORM EVENTLISTENER
@@ -23,9 +24,10 @@ if (localStorage.getItem("tasks")) {
 todoForm.addEventListener("submit", function (e) {
   e.preventDefault(); // no browser refresh after submit
   const input = todoForm.description;
-  const inputValue = input.value.trim();
+  const inputValue = input.value.trim(); // trim the spaces before, after the string
 
   if (inputValue != "") {
+    // Create a new task object -
     const task = {
       id: new Date().getTime(), // adding timestamp for create an id
       description: inputValue,
@@ -34,19 +36,21 @@ todoForm.addEventListener("submit", function (e) {
 
     tasks.push(task);
     localStorage.setItem("tasks", JSON.stringify(tasks));
-    createTask(task);
+    displayTask(task);
     input.value = ""; // clear input field
   }
-  input.focus(); // Focus on input field
+  input.focus(); // Focus on input field for next task
 });
 
 /*    REMOVE TASK EVENTLISTENER
 ========================================================================== */
 todoList.addEventListener("click", (e) => {
+  // Check if click on the remove button OR parent
   if (
     e.target.classList.contains("remove-task") ||
     e.target.parentElement.classList.contains("remove-task")
   ) {
+    // Find the closest parent li and get its id
     const taskId = e.target.closest("li").id;
     removeTask(taskId);
   }
@@ -55,20 +59,23 @@ todoList.addEventListener("click", (e) => {
 /*    CLEAR ALL TASKS EVENTLISTENER
 ========================================================================== */
 clearBtn.addEventListener("click", (e) => {
+  // Clear the tasklist, reset array, remove tasks from localstorage
   todoList.innerHTML = "";
   tasks = [];
   localStorage.removeItem("tasks");
 });
 
-// update task - change status or name
+/*    UPDATE TASK EVENTLISTENER (change status or name)
+========================================================================== */
+
 todoList.addEventListener("input", (e) => {
-  const taskId = e.target.closest("li").id;
+  const taskId = e.target.closest("li").id; // Find the id of the closest parent li
   updateTask(taskId, e.target);
 });
 
-/*    CREATE SINGLE TASK FUNCTION
+/*    DISPLAY SINGLE TASK FUNCTION
 ========================================================================== */
-function createTask(task) {
+function displayTask(task) {
   const taskEl = document.createElement("li");
   taskEl.setAttribute("id", task.id);
   taskEl.classList.add("task-item");
@@ -92,7 +99,7 @@ function createTask(task) {
 /*    REMOVE SINGLE TASK FUNCTION
 ========================================================================== */
 function removeTask(taskId) {
-  tasks = tasks.filter((task) => task.id !== parseInt(taskId));
+  // update local storage, and remove the task element
   localStorage.setItem("tasks", JSON.stringify(tasks));
   document.getElementById(taskId).remove();
 }
@@ -100,13 +107,13 @@ function removeTask(taskId) {
 /*    UPDATE SINGLE TASK FUNCTION
 ========================================================================== */
 function updateTask(taskId, el) {
-  const task = tasks.find((task) => task.id === parseInt(taskId));
+  const task = tasks.find((task) => task.id === parseInt(taskId)); // search for the specific ID
   const span = el.nextElementSibling.nextElementSibling;
-  task.isDone = !task.isDone;
+  task.isDone = !task.isDone; // toggle the isDone flag
   if (task.isDone) {
     el.setAttribute("checked", "");
   } else {
     el.removeAttribute("checked");
   }
-  localStorage.setItem("tasks", JSON.stringify(tasks));
+  localStorage.setItem("tasks", JSON.stringify(tasks)); // safe to localStorage
 }
