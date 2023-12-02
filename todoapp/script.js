@@ -2,9 +2,7 @@
 TODOS:
 
 - First Todo in start view // { id: 1701371729310, description: "My first task 😜", isDone: false },
-- Add Filtering
-- Duplicate Check: Do not allow duplicate todo descriptions (i.e. two todos with the description "Learn JavaScript"
-- My Bonus: Count open Todos
+- Add Filtering (- windows.location überschreiben... für Filtering)
 */
 
 /*   REFERENCE TO SELECTORS
@@ -12,7 +10,20 @@ TODOS:
 const todoForm = document.querySelector(".todo-form"); // reference to complete form
 const todoList = document.querySelector(".todo-list"); // reference to dynamic list
 const clearBtn = document.querySelector(".clear-btn"); // reference to clear all button
+const countTask = document.querySelector(".count-task"); // reference to counter
 let tasks = JSON.parse(localStorage.getItem("tasks")) || []; // load tasks from local storage OR set a new array
+
+// Add a default "Start Todo" if there are no tasks in local storage
+if (tasks.length === 0) {
+  const testTodo = {
+    id: new Date().getTime(),
+    description: "Start your first task 😜",
+    isDone: false,
+  };
+  tasks.push(testTodo); // added testTodo
+
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
 // Setting stage - displaying existing tasks from local storage
 if (localStorage.getItem("tasks")) {
@@ -25,19 +36,29 @@ todoForm.addEventListener("submit", function (e) {
   e.preventDefault(); // no browser refresh after submit
   const input = todoForm.description;
   const inputValue = input.value.trim(); // trim the spaces before, after the string
+  const inputDuplicateTest = inputValue.toLowerCase();
 
-  if (inputValue != "") {
-    // Create a new task object -
-    const task = {
-      id: new Date().getTime(), // adding timestamp for create an id
-      description: inputValue,
-      isDone: false,
-    };
+  // Check for duplicates
+  const isDuplicate = tasks.some(
+    (task) => task.description.toLowerCase() === inputDuplicateTest
+  ); // check if inputValue is in tasks
 
-    tasks.push(task);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    displayTask(task);
-    input.value = ""; // clear input field
+  if (isDuplicate) {
+    alert("Sorry, you can't add a duplicate task!");
+  } else {
+    if (inputValue != "") {
+      // Create a new task object
+      const task = {
+        id: new Date().getTime(), // adding timestamp for create an id
+        description: inputValue,
+        isDone: false,
+      };
+
+      tasks.push(task);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      displayTask(task);
+      input.value = ""; // clear input field
+    }
   }
   input.focus(); // Focus on input field for next task
 });
@@ -63,6 +84,7 @@ clearBtn.addEventListener("click", (e) => {
   todoList.innerHTML = "";
   tasks = [];
   localStorage.removeItem("tasks");
+  countOpenTasks();
 });
 
 /*    UPDATE TASK EVENTLISTENER (change status or name)
@@ -71,11 +93,23 @@ clearBtn.addEventListener("click", (e) => {
 todoList.addEventListener("input", (e) => {
   const taskId = e.target.closest("li").id; // Find the id of the closest parent li
   updateTask(taskId, e.target);
+  countOpenTasks();
 });
+
+/*    COUNT OPEN TASK FUNCTION
+========================================================================== */
+
+function countOpenTasks() {
+  const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  const openTasks = storedTasks.filter((task) => !task.isDone);
+
+  return (countTask.textContent = openTasks.length);
+}
 
 /*    DISPLAY SINGLE TASK FUNCTION
 ========================================================================== */
 function displayTask(task) {
+  countOpenTasks();
   const taskEl = document.createElement("li");
   taskEl.setAttribute("id", task.id);
   taskEl.classList.add("task-item");
@@ -85,25 +119,29 @@ function displayTask(task) {
       <input type="checkbox" id="${task.description}" name="tasks" ${
     task.isDone ? "checked" : ""
   }>
-      <label for="${task.description}"></label>
-      <span class="description ${task.isDone ? "done" : ""}">${
-    task.description
-  }</span>
+    
+      <label for="${task.description}" class="description ${
+    task.isDone ? "done" : ""
+  }">${task.description}</label>
     </div>
     <button class="remove-task" title="Remove task">X</button>
   `;
   taskEl.innerHTML = taskElMarkup;
   todoList.appendChild(taskEl);
+  countOpenTasks();
 }
 
 /*    REMOVE SINGLE TASK FUNCTION
 ========================================================================== */
 function removeTask(taskId) {
-  // update local storage, and remove the task element
+  // all tasks remain there, if task.id is not die taskID
+  tasks = tasks.filter((task) => task.id !== parseInt(taskId));
+  // Update localStorage the rest tasks
   localStorage.setItem("tasks", JSON.stringify(tasks));
+  // Delete taskId from DOM
   document.getElementById(taskId).remove();
+  countOpenTasks();
 }
-
 /*    UPDATE SINGLE TASK FUNCTION
 ========================================================================== */
 function updateTask(taskId, checkbox) {
@@ -115,4 +153,5 @@ function updateTask(taskId, checkbox) {
     checkbox.removeAttribute("checked");
   }
   localStorage.setItem("tasks", JSON.stringify(tasks)); // safe to localStorage
+  countOpenTasks();
 }

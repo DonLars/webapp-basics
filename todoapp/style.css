@@ -54,7 +54,7 @@ main {
   list-style: none;
 }
 
-.todo-list [type="checkbox"]:checked ~ span {
+.todo-list [type="checkbox"]:checked ~ label {
   text-decoration: line-through;
   font-style: italic;
   color: var(--gradient1-color);
@@ -90,6 +90,9 @@ main {
   gap: 1rem;
 }
 
+label {
+  cursor: pointer;
+}
 input {
   border: 5px solid var(--gradient1-color);
   font-size: 2rem;
@@ -136,10 +139,6 @@ input[type="radio"] {
   background: black;
   color: white;
   cursor: pointer;
-}
-
-label {
-  color: white;
 }
 
 input[type="checkbox"] {
