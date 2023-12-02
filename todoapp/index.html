@@ -10,41 +10,50 @@
     <main>
       <div class="todo-container">
         <h1>TODO App</h1>
-        <h2>Getting <span class="count-task">1</span> things done…</h2>
+        <h2 class="claim">
+          Getting <span class="count-task">1</span> things done…
+        </h2>
         <form class="todo-form">
           <div class="form-wrapper">
             <input
               type="text"
               name="description"
+              title="Task description"
               placeholder="Start your list!"
               autofocus
             />
-            <button type="submit">add</button>
-            <button class="clear-btn">Clear list</button>
-            <section class="filter-group">
-              <label for="all">All</label>
-              <input
-                type="radio"
-                name="filter"
-                value="all"
-                class="filter-todo"
-              />
-
-              <label for="done">done</label>
-              <input
-                type="radio"
-                name="filter"
-                value="done"
-                class="filter-todo"
-              />
-              <label for="open">open</label>
-              <input
-                type="radio"
-                name="filter"
-                value="open"
-                class="filter-todo"
-              />
-            </section>
+            <button title="add new task" type="submit">add</button>
+            <button title="clear list" class="clear-btn">Clear</button>
+            <div class="filter-options">
+              <label>
+                <input
+                  type="radio"
+                  title="show all tasks"
+                  name="filter"
+                  value="all"
+                  checked
+                />
+                All
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  title="show done tasks"
+                  name="filter"
+                  value="done"
+                />
+                Done
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  title="show open tasks"
+                  name="filter"
+                  value="open"
+                />
+                Open
+              </label>
+            </div>
           </div>
         </form>
         <ul class="todo-list">

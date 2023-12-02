@@ -1,19 +1,15 @@
-/* 
-TODOS:
-
-- First Todo in start view // { id: 1701371729310, description: "My first task 😜", isDone: false },
-- Add Filtering (- windows.location überschreiben... für Filtering)
-*/
-
 /*   REFERENCE TO SELECTORS
 ========================================================================== */
 const todoForm = document.querySelector(".todo-form"); // reference to complete form
 const todoList = document.querySelector(".todo-list"); // reference to dynamic list
 const clearBtn = document.querySelector(".clear-btn"); // reference to clear all button
 const countTask = document.querySelector(".count-task"); // reference to counter
+const claim = document.querySelector(".claim"); // reference to claim
+const filterOptions = document.querySelector(".filter-options"); // reference to filter radiobuttons
+
 let tasks = JSON.parse(localStorage.getItem("tasks")) || []; // load tasks from local storage OR set a new array
 
-// Add a default "Start Todo" if there are no tasks in local storage
+// Add a default "testTodo" if there are no tasks in local storage
 if (tasks.length === 0) {
   const testTodo = {
     id: new Date().getTime(),
@@ -21,7 +17,6 @@ if (tasks.length === 0) {
     isDone: false,
   };
   tasks.push(testTodo); // added testTodo
-
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
@@ -32,22 +27,22 @@ if (localStorage.getItem("tasks")) {
 
 /*    SUBMIT FORM EVENTLISTENER
 ========================================================================== */
-todoForm.addEventListener("submit", function (e) {
-  e.preventDefault(); // no browser refresh after submit
+todoForm.addEventListener("submit", function (event) {
+  event.preventDefault(); // no browser refresh after submit
   const input = todoForm.description;
   const inputValue = input.value.trim(); // trim the spaces before, after the string
   const inputDuplicateTest = inputValue.toLowerCase();
 
   // Check for duplicates
   const isDuplicate = tasks.some(
-    (task) => task.description.toLowerCase() === inputDuplicateTest
-  ); // check if inputValue is in tasks
+    (task) => task.description.toLowerCase() === inputDuplicateTest // check if inputValue is in tasks
+  );
 
   if (isDuplicate) {
     alert("Sorry, you can't add a duplicate task!");
   } else {
     if (inputValue != "") {
-      // Create a new task object
+      // Create a new task
       const task = {
         id: new Date().getTime(), // adding timestamp for create an id
         description: inputValue,
@@ -63,23 +58,25 @@ todoForm.addEventListener("submit", function (e) {
   input.focus(); // Focus on input field for next task
 });
 
-/*    REMOVE TASK EVENTLISTENER
+/*    REMOVE TASK EVENTLISTENER (remove one task)
 ========================================================================== */
-todoList.addEventListener("click", (e) => {
+todoList.addEventListener("click", (event) => {
   // Check if click on the remove button OR parent
   if (
-    e.target.classList.contains("remove-task") ||
-    e.target.parentElement.classList.contains("remove-task")
+    event.target.classList.contains("remove-task") ||
+    event.target.parentElement.classList.contains("remove-task")
   ) {
     // Find the closest parent li and get its id
-    const taskId = e.target.closest("li").id;
+    const taskId = event.target.closest("li").id;
+    countOpenTasks();
+
     removeTask(taskId);
   }
 });
 
-/*    CLEAR ALL TASKS EVENTLISTENER
+/*    CLEAR ALL TASKS EVENTLISTENER (delete all tasks)
 ========================================================================== */
-clearBtn.addEventListener("click", (e) => {
+clearBtn.addEventListener("click", () => {
   // Clear the tasklist, reset array, remove tasks from localstorage
   todoList.innerHTML = "";
   tasks = [];
@@ -90,44 +87,45 @@ clearBtn.addEventListener("click", (e) => {
 /*    UPDATE TASK EVENTLISTENER (change status or name)
 ========================================================================== */
 
-todoList.addEventListener("input", (e) => {
-  const taskId = e.target.closest("li").id; // Find the id of the closest parent li
-  updateTask(taskId, e.target);
+todoList.addEventListener("input", (event) => {
+  const taskId = event.target.closest("li").id; // Find the id of the closest parent li in event
+  updateTask(taskId, event.target);
   countOpenTasks();
 });
 
-/*    COUNT OPEN TASK FUNCTION
+/*    FILTER EVENTLISTENER (all, open, done)
 ========================================================================== */
 
-function countOpenTasks() {
-  const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  const openTasks = storedTasks.filter((task) => !task.isDone);
+filterOptions.addEventListener("change", function (event) {
+  //console.log(event.target.value);
+  const filterValue = event.target.value; //  extract the specific value from changing Element out of the eventobjekt
+  filterTasks(filterValue);
+});
 
-  return (countTask.textContent = openTasks.length);
-}
+/* =========================================================================
+      ALL FUNCTIONS
+========================================================================== */
 
 /*    DISPLAY SINGLE TASK FUNCTION
 ========================================================================== */
 function displayTask(task) {
-  countOpenTasks();
-  const taskEl = document.createElement("li");
-  taskEl.setAttribute("id", task.id);
-  taskEl.classList.add("task-item");
+  const newListItem = document.createElement("li");
+  newListItem.setAttribute("id", task.id);
+  newListItem.classList.add("task-item");
 
-  const taskElMarkup = `
+  const newListTemplate = `
     <div class="checkbox-wrapper">
-      <input type="checkbox" id="${task.description}" name="tasks" ${
-    task.isDone ? "checked" : ""
-  }>
-    
+      <input type="checkbox" title="toggle for complete / open" id="${
+        task.description
+      }" name="tasks" ${task.isDone ? "checked" : ""}>
       <label for="${task.description}" class="description ${
     task.isDone ? "done" : ""
   }">${task.description}</label>
     </div>
-    <button class="remove-task" title="Remove task">X</button>
+    <button class="remove-task" title="remove this task">X</button>
   `;
-  taskEl.innerHTML = taskElMarkup;
-  todoList.appendChild(taskEl);
+  newListItem.innerHTML = newListTemplate;
+  todoList.appendChild(newListItem);
   countOpenTasks();
 }
 
@@ -154,4 +152,43 @@ function updateTask(taskId, checkbox) {
   }
   localStorage.setItem("tasks", JSON.stringify(tasks)); // safe to localStorage
   countOpenTasks();
+}
+
+/*    FILTER TASKS FUNCTION
+========================================================================== */
+
+function filterTasks(filter) {
+  const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  let filteredTasks;
+
+  switch (filter) {
+    case "done":
+      filteredTasks = storedTasks.filter((filterTodo) => filterTodo.isDone);
+      break;
+    case "open":
+      filteredTasks = storedTasks.filter((filterOpen) => !filterOpen.isDone);
+      break;
+    default:
+      filteredTasks = storedTasks; // Show all tasks, without filtering
+  }
+
+  // clear whole list
+  todoList.innerHTML = "";
+
+  // display filtered tasks
+  //console.log(filteredTasks);
+  filteredTasks.forEach(displayTask); // apply the function displayTask to each element of the filteredTasks array
+}
+
+/*    COUNT OPEN TASK FUNCTION
+========================================================================== */
+
+function countOpenTasks() {
+  const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  const openTasks = storedTasks.filter((task) => !task.isDone);
+
+  if (openTasks.length === 0) {
+    claim.textContent = "Great, all tasks are completed!";
+  }
+  return (countTask.textContent = openTasks.length);
 }
