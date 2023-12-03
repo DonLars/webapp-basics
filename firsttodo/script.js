@@ -1,43 +1,83 @@
 "use strict";
 /*
-        Add Item (ID hochzählen)
-        Remove Item (ID herunterzählen)
         Eigene Funktionen Set Items / Update Item
-        Save List
-        Refresh List
+        Delete Items
+        Filter
+        Bonus: Count Items
         */
 
 /* SETTING UP VARIABLES FOR REFERENCES */
 
-let taskCount = 0;
-
-const inputField = document.getElementById("input").trim();
+const inputField = document.getElementById("input");
 const taskList = document.getElementById("task-list");
 const addForm = document.getElementById("task-form");
 const clearButton = document.getElementById("clear-btn");
+let taskCount = 0;
 
 // State
 let tasks = [];
+/*const testTodo = {
+  id: new Date().getTime(),
+  description: "Start your first task 😜",
+  isDone: false,
+};
+tasks.push(testTodo); // added testTodo
+*/
+
+/*    FUNCTION LOAD FROM LOCALSTORAGE
+========================================================================== */
+function loadtasks() {
+  const savedString = localStorage.getItem("tasks") || [];
+  tasks = JSON.parse(savedString);
+}
+
+/*    FUNCTION SAVE TO LOCALSTORAGE
+========================================================================== */
 function savetasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-function loadtasks() {
-  const savedString = localStorage.getItem("tasks");
-  if (savedString == null) {
-    return;
-  }
-  tasks = JSON.parse(savedString);
-}
-
-// render
+// display function
 function onStateChange() {
   savetasks();
-  render();
+  display();
 }
 
-function render() {
-  // Tisch abräumen
+/*    SUBMIT ADD  - EVENT LISTENER
+========================================================================== */
+
+addForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  // 1. State updaten
+  tasks.push({
+    id: new Date().getTime(),
+    description: inputField.value.trim(),
+    isDone: false,
+  });
+  console.log(input);
+
+  // 2. Redisplay triggern
+  onStateChange();
+  inputField.value = "";
+});
+
+/*    CLEAR ALL - EVENT LISTENER 
+========================================================================== */
+clearButton.addEventListener("click", function () {
+  if (confirm("Möchtest du wirklich alle Aufgaben löschen?")) {
+    tasks = [];
+
+    //    deleteAllTasks();
+    //  displayTasks();
+  }
+  onStateChange();
+});
+
+/*    FUNCTION zur Anzeige
+========================================================================== */
+
+function display() {
   taskList.innerHTML = "";
 
   for (const word of tasks) {
@@ -48,92 +88,13 @@ function render() {
   }
 }
 
-// Event Listener
-addForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-
-  const input = inputField.value;
-  //console.log("Submit", deutsch);
-
-  // 1. State updaten
-  tasks.push({
-    description: input,
-  });
-
-  console.log(tasks);
-
-  // 2. Rerender triggern
-  onStateChange();
-});
-
-clearButton.addEventListener("click", () => {
-  // 1. State update
-
-  tasks = [];
-
-  // 2. Rerender triggern
-  onStateChange();
-});
+/*    FUNCTION zum Überprüfen, ob eine Aufgabe bereits vorhanden ist
+========================================================================== */
+function isDuplicateTask(tasks, newTaskText) {
+  return tasks.some(
+    (task) => task.text.toLowerCase() === newTaskText.toLowerCase()
+  );
+}
 
 loadtasks();
-render();
-
-/*
-        todos.push("Keller aufräumen");
-        todos.push("Fenster putzen");
-        todos.push("Wäsche waschen");
-        */
-
-/*
-        function displayTodos() {
-          let todoListElement = document.getElementById("todoList");
-        
-          todoListElement.innerHTML = "";
-          for (let todo of todos) {
-            let listItem = document.createElement("li");
-            listItem.textContent = todo;
-            let removeBtn = document.createElement("button");
-            removeBtn.textContent = "x";
-            removeBtn.onclick = () => {
-              removeTodo(todo);
-            };
-            listItem.appendChild(removeBtn);
-            todoListElement.appendChild(listItem);
-          }
-        }
-        function addTodo() {
-          let newTodo = document.getElementById("todoInput").value;
-          todos.push(newTodo);
-        
-          displayTodos();
-        }
-        
-        function removeTodo(todoToRemove) {
-          let index = todos.indexOf(todoToRemove);
-          todos.splice(index, 1);
-          displayTodos();
-        }
-        
-        displayTodos();
-        //addTodo();*/
-
-// State enities
-/*
-        let filter = ["all", "open", "done"];
-        
-        let todosAppState = {
-          filter: "all",
-          todos: [
-            {
-              id: 0,
-              decription: "Keller aufräumen",
-              done: false,
-            },
-            {
-              id: 1,
-              decription: "Fenster putzen",
-              done: false,
-            },
-          ],
-        };
-        */
+onStateChange();
