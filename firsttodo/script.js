@@ -1,12 +1,13 @@
 "use strict";
 
-/*    STAGING & GET ELEMENTS
+/* TODO: Demo Todo, css,  */
+
+/*    SETTING UP REFERENCES
 ========================================================================== */
-const taskForm = document.getElementById("task-form"); // reference to form
-const input = document.getElementById("input"); // reference to inputfield
-const taskList = document.getElementById("task-list"); // reference to task list
-const clearButton = document.getElementById("clear-btn"); // reference to clear button
-const countTask = document.querySelector(".count-task"); // reference to counter
+const taskForm = document.getElementById("task-form");
+const input = document.getElementById("input");
+const taskList = document.getElementById("task-list");
+const clearButton = document.getElementById("clear-btn");
 const claim = document.querySelector(".claim"); // reference to claim
 let currentFilter = "all"; // "all", "done", "open"
 let tasks = JSON.parse(localStorage.getItem("tasks")) || []; // load tasks from local storage OR set a new array
@@ -14,12 +15,12 @@ let tasks = JSON.parse(localStorage.getItem("tasks")) || []; // load tasks from 
 // Add a default "testTodo" if there are no tasks in local storage
 if (tasks.length === 0) {
   const testTodo = {
-    id: new Date().getTime(), // Get time for create an id
+    id: new Date().getTime(),
     description: "Start your first task 😜",
     isDone: false,
   };
-  tasks.push(testTodo); // push into tasks
-  localStorage.setItem("tasks", JSON.stringify(tasks)); // save to localStorage
+  tasks.push(testTodo); // added testTodo
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 /*    EVENT LISTENER - SUBMIT BUTTON
@@ -27,41 +28,41 @@ if (tasks.length === 0) {
 taskForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  // Check for duplicates, if there are some tasks which
+  // Check for duplicates
   const isDuplicate = tasks.some(
     (task) =>
-      task.description.toLowerCase() === input.value.trim().toLowerCase() // check if task in array === inputValue
+      task.description.toLowerCase() === input.value.trim().toLowerCase()
   );
 
   if (isDuplicate) {
     alert("Sorry, you can't add a duplicate task!");
   } else {
     if (input.value.trim() !== "") {
-      // if field is NOT clear update State
+      // Update state
       tasks.push({
-        id: new Date().getTime(), // Get time for create an id
-        description: input.value.trim(), // Get input field, trim whitespaces before and after
+        id: new Date().getTime(),
+        description: input.value.trim(),
         isDone: false,
       });
 
-      // Render state
-      render();
+      // Trigger redisplay
+      onStateChange();
 
-      input.value = ""; // Clear input field
-      input.focus(); // Focus input field for the next task
+      input.value = "";
+      input.focus(); // Focus on input field for the next task
     } else {
-      return; // do nothing
+      return;
     }
   }
 });
 
 /*    EVENT LISTENER - FILTER
 ========================================================================== */
-const filterRadios = document.querySelectorAll('input[name="filter"]'); // select radio inputs
+const filterRadios = document.querySelectorAll('input[name="filter"]');
 filterRadios.forEach((radio) => {
   radio.addEventListener("change", function () {
-    currentFilter = radio.value; // set currentfilter to this value
-    onStateChange();
+    currentFilter = this.value;
+    display();
   });
 });
 
@@ -69,32 +70,32 @@ filterRadios.forEach((radio) => {
 ========================================================================== */
 clearButton.addEventListener("click", function () {
   if (confirm("Do you really want to delete the complete list?")) {
-    tasks = []; // clear complete array after alert windows
+    tasks = [];
   }
   onStateChange();
 });
 
-/*    FUNCTION - render
+/*    FUNCTION - DISPLAY
 ========================================================================== */
-function render() {
-  taskList.innerHTML = ""; // Clear taskList
+function display() {
+  taskList.innerHTML = "";
 
   // Filter
   const filteredTodos = tasks.filter((task) => {
     if (currentFilter == "done") {
-      return task.isDone; // set task to isDone
+      return task.isDone;
     }
     if (currentFilter == "open") {
-      return !task.isDone; // set task to NOT isDone
+      return !task.isDone;
     }
-    return true; // all
+    return true;
   });
 
   // Building list element with for each
   filteredTodos.forEach(function (task) {
-    const listItem = document.createElement("li"); // create list element
-    listItem.setAttribute("id", task.id); // add id to list element
-    listItem.classList.add("task-item"); // add task-item class to list element
+    const listItem = document.createElement("li");
+    listItem.setAttribute("id", task.id);
+    listItem.classList.add("task-item");
     listItem.innerHTML = `
     <div class="checkbox-wrapper">
       <input type="checkbox" name="is-done" class="toggle-complete" id="checkbox-${
@@ -103,22 +104,23 @@ function render() {
       <label for="checkbox-${task.id}">${task.description}</label>
       </div>
       <button class="delete-task" id="${task.id}">X</button>
-    `; // add HTML template with the complete list item, checkbox, label, delete Button
+    `;
 
-    taskList.append(listItem); // append to UL List
+    taskList.append(listItem);
   });
 
   // EVENTLISTENER - CHECKBOXES
-  const checkboxes = document.querySelectorAll(".toggle-complete"); // get all checkboxes
+  const checkboxes = document.querySelectorAll(".toggle-complete");
   checkboxes.forEach((checkbox) => {
     checkbox.addEventListener("change", () => {
       const taskId = parseInt(checkbox.id.replace("checkbox-", "")); // entfernen der checkbox ID
-      const currentTask = tasks.find((task) => task.id === taskId); // find in tasks the current Task by compare the IDs
+      const currentTask = tasks.find((task) => task.id === taskId);
 
       // Änderungen für Checkboxen
-      currentTask.isDone = checkbox.checked; // set current Task to the checked checkbox
+      currentTask.isDone = checkbox.checked;
 
-      onStateChange(); // Save in localStorage and update the display
+      // Speichern im Local Storage und aktualisieren der Anzeige
+      onStateChange();
     });
   });
 
@@ -129,17 +131,18 @@ function render() {
     button.addEventListener("click", () => {
       const taskId = button.id;
       tasks = tasks.filter((removeTask) => removeTask.id !== parseInt(taskId));
-      localStorage.setItem("tasks", JSON.stringify(tasks)); // Save to localStorage
-      document.getElementById(taskId).remove(); // delete choosen ID from DOM
+      localStorage.setItem("tasks", JSON.stringify(tasks)); // in storage speichern
+      document.getElementById(taskId).remove(); // gewählte ID aus dem DOM löschen
     });
   });
 }
 
-/*    FUNCTION - ON STAGE (SAVE + Render WRAPPER)
+/*    FUNCTION - ON STAGE (SAVE + DISPLAY WRAPPER)
 ========================================================================== */
 function onStateChange() {
-  localStorage.setItem("tasks", JSON.stringify(tasks)); // Save to localStorage
-  render();
+  //    Save to localstorage
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  display();
   currentTaskCount();
 }
 
@@ -147,14 +150,13 @@ function onStateChange() {
 ========================================================================== */
 
 function currentTaskCount() {
-  const openTasks = tasks.filter((task) => !task.isDone); // Filter all tasks, if not isDone
+  const openTasks = tasks.filter((task) => !task.isDone);
 
   if (openTasks.length > 0) {
     claim.textContent = `Getting ${openTasks.length} things done…`;
   } else {
     claim.textContent = `Great, all tasks are completed!`;
   }
-  countTask.textContent = openTasks.length; // Update the countTask element
 }
 
 onStateChange(); // Initial call to set up the initial state
