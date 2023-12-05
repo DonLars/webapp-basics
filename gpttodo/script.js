@@ -2,10 +2,14 @@ const taskForm = document.getElementById("taskForm");
 const filter = document.querySelectorAll('input[name="filter"]');
 const deleteBtn = document.getElementById("deleteAllButton");
 
+// Initialisiere die Anzeige beim Laden der Seite
+displayTasks();
+
 /* Add Event Listener */
 taskForm.addEventListener("submit", function (event) {
   event.preventDefault(); // Verhindere das Standardverhalten des Formulars
   addTask();
+  displayTasks();
 });
 
 filter.forEach(function (filterInput) {
@@ -16,55 +20,15 @@ filter.forEach(function (filterInput) {
 
 deleteBtn.addEventListener("click", function () {
   if (confirm("Möchtest du wirklich alle Aufgaben löschen?")) {
-    deleteAllTasks();
+    localStorage.removeItem("tasks");
     displayTasks();
   }
 });
 
-/*    Funktion zum Hinzufügen einer Aufgabe
-========================================================================== */
-function addTask() {
-  var taskInput = document.getElementById("taskInput");
-  var taskText = taskInput.value.trim(); // Trimme den Text, um leere Zeichen am Anfang/Ende zu entfernen
-
-  if (taskText !== "") {
-    // Hole die vorhandenen Aufgaben aus dem LocalStorage
-    var tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-    // Überprüfe, ob die Aufgabe bereits vorhanden ist (Duplikat vermeiden)
-    if (!isDuplicateTask(tasks, taskText)) {
-      // Erstelle einen eindeutigen Zeitstempel als ID für die Aufgabe
-      var timestamp = new Date().getTime();
-
-      // Füge die neue Aufgabe hinzu
-      tasks.push({ id: timestamp, text: taskText, completed: false });
-
-      // Speichere die aktualisierten Aufgaben im LocalStorage
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-
-      // Leere das Eingabefeld
-      taskInput.value = "";
-
-      // Aktualisiere die Anzeige der Aufgaben
-      displayTasks();
-    } else {
-      alert("Diese Aufgabe existiert bereits.");
-    }
-  }
-}
-
-/*    Funktion zum Überprüfen, ob eine Aufgabe bereits vorhanden ist
-========================================================================== */
-function isDuplicateTask(tasks, newTaskText) {
-  return tasks.some(
-    (task) => task.text.toLowerCase() === newTaskText.toLowerCase()
-  );
-}
-
 /*    Funktion zum Anzeigen der Aufgaben mit Filter
 ========================================================================== */
 function displayTasks(filter) {
-  var taskList = document.getElementById("taskList");
+  var taskList = document.getElementById("taskList"); // Tisch abräumenå
   taskList.innerHTML = ""; // Leere die Liste
 
   // Hole die Aufgaben aus dem LocalStorage
@@ -119,7 +83,76 @@ function displayTasks(filter) {
   });
 }
 
-/*    Funktion zum Löschen einer Aufgabe basierend auf der ID
+// Füge einen Standard-Eintrag (Staging) hinzu, wenn die Liste leer ist
+if (
+  localStorage.getItem("tasks") === null ||
+  JSON.parse(localStorage.getItem("tasks")).length === 0
+) {
+  const stagingTaskText = "Staging-Aufgabe";
+
+  // Hole die vorhandenen Aufgaben aus dem LocalStorage
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  // Überprüfe, ob die Staging-Aufgabe bereits vorhanden ist
+  if (!isDuplicateTask(tasks, stagingTaskText)) {
+    // Erstelle einen eindeutigen Zeitstempel als ID für die Staging-Aufgabe
+    const timestamp = new Date().getTime();
+
+    // Füge die Staging-Aufgabe hinzu
+    tasks.push({
+      id: timestamp,
+      text: stagingTaskText,
+      completed: false,
+    });
+
+    // Speichere die aktualisierten Aufgaben im LocalStorage
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    // Aktualisiere die Anzeige der Aufgaben
+    displayTasks();
+  }
+}
+
+/*    Funktion zum Hinzufügen einer Aufgabe
+========================================================================== */
+function addTask() {
+  var taskInput = document.getElementById("taskInput");
+  var taskText = taskInput.value.trim(); // Trimme den Text, um leere Zeichen am Anfang/Ende zu entfernen
+
+  if (taskText !== "") {
+    // Hole die vorhandenen Aufgaben aus dem LocalStorage
+    var tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    // Überprüfe, ob die Aufgabe bereits vorhanden ist (Duplikat vermeiden)
+    if (!isDuplicateTask(tasks, taskText)) {
+      // Erstelle einen eindeutigen Zeitstempel als ID für die Aufgabe
+      var timestamp = new Date().getTime();
+
+      // Füge die neue Aufgabe hinzu
+      tasks.push({ id: timestamp, text: taskText, completed: false });
+
+      // Speichere die aktualisierten Aufgaben im LocalStorage
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+
+      // Leere das Eingabefeld
+      taskInput.value = "";
+
+      // Aktualisiere die Anzeige der Aufgaben
+    } else {
+      alert("Diese Aufgabe existiert bereits.");
+    }
+  }
+}
+
+/*    Funktion zum Überprüfen, ob eine Aufgabe bereits vorhanden ist
+========================================================================== */
+function isDuplicateTask(tasks, newTaskText) {
+  return tasks.some(
+    (task) => task.text.toLowerCase() === newTaskText.toLowerCase()
+  );
+}
+
+/*    FUNKTION zum Löschen einer Aufgabe basierend auf der ID
 ========================================================================== */
 function deleteTask(id) {
   var tasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -128,13 +161,7 @@ function deleteTask(id) {
   displayTasks(); // Aktualisiere die Anzeige
 }
 
-/*    Funktion zum Löschen aller Aufgaben
-========================================================================== */
-function deleteAllTasks() {
-  localStorage.removeItem("tasks");
-}
-
-/*    Funktion zum Umschalten des Status "abgeschlossen"
+/*    FUNKTION zum Umschalten des Status "abgeschlossen"
 ========================================================================== */
 function toggleComplete(index) {
   var tasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -142,7 +169,8 @@ function toggleComplete(index) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
   displayTasks(); // Aktualisiere die Anzeige
 }
-/*    Funktion zum Aktualisieren des Zählers für offene Aufgaben
+
+/*    FUNKTION zum Aktualisieren des Zählers für offene Aufgaben
 ========================================================================== */
 function updateOpenTasksCounter(count) {
   var openTasksCountElement = document.getElementById("openTasksCount");
@@ -150,6 +178,3 @@ function updateOpenTasksCounter(count) {
     openTasksCountElement.textContent = count;
   }
 }
-
-// Initialisiere die Anzeige beim Laden der Seite
-displayTasks();

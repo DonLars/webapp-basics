@@ -19,7 +19,7 @@ const todos = [
     isDone: false,
   },
 ];
-let currentFilter = "open"; // "all", "done", "open"
+let currentFilter = "all"; // "all", "done", "open"
 
 // Render
 function render() {

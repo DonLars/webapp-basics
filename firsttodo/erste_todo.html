@@ -17,25 +17,54 @@
       <body>
         <main>
           <article class="todo-article">
-            <h1>TODO App</h1>
+            <h1>My 1st TODO App</h1>
             <h2>Getting things done…</h2>
-            <button id="clear-btn">Clear list</button>
 
             <form id="task-form">
-              <label>New Task:</label>
               <input
                 type="text"
                 name="Eingabe"
                 id="input"
                 placeholder="Start your list!"
+                autofocus
               />
 
-              <button id="add-btn" type="submit">Add</button>
+              <button id="add-btn" type="submit">add</button>
+              <button id="clear-btn">clear</button>
+
+              <div class="filter">
+                <label for="filter-all">
+                  <input
+                    type="radio"
+                    name="filter"
+                    id="filter-all"
+                    value="all"
+                    checked
+                  />
+                  All
+                </label>
+                <label for="filter-open">
+                  <input
+                    type="radio"
+                    name="filter"
+                    id="filter-open"
+                    value="open"
+                  />
+                  Open
+                </label>
+                <label for="filter-done">
+                  <input
+                    type="radio"
+                    name="filter"
+                    id="filter-done"
+                    value="done"
+                  />
+                  Done
+                </label>
+              </div>
             </form>
 
-            <ul id="task-list">
-              <li>First todo</li>
-            </ul>
+            <ul id="task-list"></ul>
           </article>
         </main>
         <script src="script.js"></script>

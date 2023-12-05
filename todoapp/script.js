@@ -29,33 +29,7 @@ if (localStorage.getItem("tasks")) {
 ========================================================================== */
 todoForm.addEventListener("submit", function (event) {
   event.preventDefault(); // no browser refresh after submit
-  const input = todoForm.description;
-  const inputValue = input.value.trim(); // trim the spaces before, after the string
-  const inputDuplicateTest = inputValue.toLowerCase();
-
-  // Check for duplicates
-  const isDuplicate = tasks.some(
-    (task) => task.description.toLowerCase() === inputDuplicateTest // check if inputValue is in tasks
-  );
-
-  if (isDuplicate) {
-    alert("Sorry, you can't add a duplicate task!");
-  } else {
-    if (inputValue != "") {
-      // Create a new task
-      const task = {
-        id: new Date().getTime(), // adding timestamp for create an id
-        description: inputValue,
-        isDone: false,
-      };
-
-      tasks.push(task);
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-      displayTask(task);
-      input.value = ""; // clear input field
-    }
-  }
-  input.focus(); // Focus on input field for next task
+  addTask();
 });
 
 /*    REMOVE TASK EVENTLISTENER (remove one task)
@@ -69,7 +43,6 @@ todoList.addEventListener("click", (event) => {
     // Find the closest parent li and get its id
     const taskId = event.target.closest("li").id;
     countOpenTasks();
-
     removeTask(taskId);
   }
 });
@@ -102,11 +75,39 @@ filterOptions.addEventListener("change", function (event) {
   filterTasks(filterValue);
 });
 
-/* =========================================================================
-      ALL FUNCTIONS
+/*    ADD TASK -  FUNCTION
 ========================================================================== */
+function addTask() {
+  const input = todoForm.description;
+  const inputValue = input.value.trim(); // trim the spaces before, after the string
 
-/*    DISPLAY SINGLE TASK FUNCTION
+  // Check for duplicates
+  const inputDuplicateTest = inputValue.toLowerCase();
+  const isDuplicate = tasks.some(
+    (task) => task.description.toLowerCase() === inputDuplicateTest // check if inputValue is in tasks
+  );
+
+  if (isDuplicate) {
+    alert("Sorry, you can't add a duplicate task!");
+  } else {
+    if (inputValue != "") {
+      // Create a new task
+      const task = {
+        id: new Date().getTime(), // adding timestamp for create an id
+        description: inputValue,
+        isDone: false,
+      };
+
+      tasks.push(task);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      displayTask(task);
+      input.value = ""; // clear input field
+    }
+  }
+  input.focus(); // Focus on input field for next task
+}
+
+/*    DISPLAY SINGLE TASK- FUNCTION
 ========================================================================== */
 function displayTask(task) {
   const newListItem = document.createElement("li");
@@ -129,7 +130,7 @@ function displayTask(task) {
   countOpenTasks();
 }
 
-/*    REMOVE SINGLE TASK FUNCTION
+/*    REMOVE SINGLE TASK - FUNCTION
 ========================================================================== */
 function removeTask(taskId) {
   // all tasks remain there, if task.id is not die taskID
@@ -140,7 +141,7 @@ function removeTask(taskId) {
   document.getElementById(taskId).remove();
   countOpenTasks();
 }
-/*    UPDATE SINGLE TASK FUNCTION
+/*    UPDATE SINGLE TASK - FUNCTION
 ========================================================================== */
 function updateTask(taskId, checkbox) {
   const task = tasks.find((task) => task.id === parseInt(taskId)); // search for the specific ID
@@ -154,9 +155,8 @@ function updateTask(taskId, checkbox) {
   countOpenTasks();
 }
 
-/*    FILTER TASKS FUNCTION
+/*    FILTER TASKS - FUNCTION
 ========================================================================== */
-
 function filterTasks(filter) {
   const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
   let filteredTasks;
@@ -174,13 +174,10 @@ function filterTasks(filter) {
 
   // clear whole list
   todoList.innerHTML = "";
-
-  // display filtered tasks
-  //console.log(filteredTasks);
   filteredTasks.forEach(displayTask); // apply the function displayTask to each element of the filteredTasks array
 }
 
-/*    COUNT OPEN TASK FUNCTION
+/*    COUNT OPEN TASK - FUNCTION
 ========================================================================== */
 
 function countOpenTasks() {
