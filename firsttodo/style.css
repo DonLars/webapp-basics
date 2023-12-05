@@ -36,15 +36,16 @@ main {
 }
 
 .todo-article {
-  width: 60vw;
+  width: 80vw;
   padding: 2rem;
   background: black;
   border-radius: 1rem;
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.2);
 }
 
-.form-wrapper {
+#task-form {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   align-items: center;
   justify-content: space-between;
@@ -81,10 +82,16 @@ label {
   cursor: pointer;
   color: black;
 }
+
 input[type="checkbox"]:checked + label {
   text-decoration: line-through;
   font-style: italic;
   color: var(--gradient1-color);
+  flex-grow: 1;
+}
+
+.task-item:has(input[type="checkbox"]:checked) {
+  opacity: 0.4;
 }
 
 input {
@@ -162,6 +169,7 @@ input[type="checkbox"]:checked::before {
   gap: 1rem;
   font-size: 2rem;
   color: white;
+  text-transform: uppercase;
 }
 
 input[type="radio"] {
