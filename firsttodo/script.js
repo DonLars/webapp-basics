@@ -1,18 +1,19 @@
 "use strict";
 
-/* Demo Todo, Counter, css,  */
+/* TODO: Demo Todo, Counter, css,  */
 
-/* SETTING UP VARIABLES FOR REFERENCES */
-
+/*    SETTING UP REFERENCES
+========================================================================== */
 const taskForm = document.getElementById("task-form");
 const input = document.getElementById("input");
 const taskList = document.getElementById("task-list");
 const clearButton = document.getElementById("clear-btn");
 let currentFilter = "all"; // "all", "done", "open"
 
-let tasks = [];
+let tasks = JSON.parse(localStorage.getItem("tasks")) || []; // load tasks from local storage OR set a new array
 
-/* SUBMIT FORM - EVENT LISTENER */
+/*    EVENT LISTENER - SUBMIT BUTTON
+========================================================================== */
 taskForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
@@ -44,7 +45,18 @@ taskForm.addEventListener("submit", (event) => {
   }
 });
 
-/* CLEAR ALL - EVENT LISTENER */
+/*    EVENT LISTENER - FILTER
+========================================================================== */
+const filterRadios = document.querySelectorAll('input[name="filter"]');
+filterRadios.forEach((radio) => {
+  radio.addEventListener("change", function () {
+    currentFilter = this.value;
+    display();
+  });
+});
+
+/*    EVENT LISTENER - CLEAR ALL
+========================================================================== */
 clearButton.addEventListener("click", function () {
   if (confirm("Do you really want to delete the complete list?")) {
     tasks = [];
@@ -52,33 +64,8 @@ clearButton.addEventListener("click", function () {
   onStateChange();
 });
 
-/* FUNCTIONS */
-
-/* Funktion zum Überprüfen, ob eine Aufgabe bereits vorhanden ist */
-function isDuplicateTask(tasks, newTaskText) {
-  return tasks.some(
-    (task) => task.description.toLowerCase() === newTaskText.toLowerCase()
-  );
-}
-
-/* FUNCTION LOAD FROM LOCALSTORAGE */
-function loadtasks() {
-  const savedString = localStorage.getItem("tasks") || "[]";
-  tasks = JSON.parse(savedString);
-}
-
-/* FUNCTION SAVE TO LOCALSTORAGE */
-function savetasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-/* FUNCTION SAVE + DISPLAY */
-function onStateChange() {
-  savetasks();
-  display();
-}
-
-/* FUNCTION DISPLAY */
+/*    FUNCTION - DISPLAY
+========================================================================== */
 function display() {
   taskList.innerHTML = "";
 
@@ -93,14 +80,13 @@ function display() {
     return true;
   });
 
-  // For each HTML Aufbauen
+  // Building list element with for each
   filteredTodos.forEach(function (task) {
     const listItem = document.createElement("li");
     listItem.setAttribute("id", task.id);
     listItem.classList.add("task-item");
     listItem.innerHTML = `
     <div class="checkbox-wrapper">
-
       <input type="checkbox" name="is-done" class="toggle-complete" id="${
         task.id
       }" ${task.isDone ? "checked" : ""}>
@@ -111,7 +97,7 @@ function display() {
     taskList.append(listItem);
   });
 
-  // Checkbox-Event-Listener
+  // EVENTLISTENER - CHECKBOXES
   const checkboxes = document.querySelectorAll(".toggle-complete");
   checkboxes.forEach((checkbox) => {
     checkbox.addEventListener("change", () => {
@@ -126,7 +112,7 @@ function display() {
         checkbox.removeAttribute("checked");
       }
 
-      // State ändern
+      // Change State
       currentTask.isDone = checkbox.checked;
 
       // Speichern im Local Storage und aktualisieren der Anzeige
@@ -134,30 +120,25 @@ function display() {
     });
   });
 
-  // Löschbutton-Event-Listener
+  /*    EVENT-LISTENER - REMOVE BUTTON
+========================================================================== */
   const deleteButtons = document.querySelectorAll(".delete-task");
   deleteButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const taskId = button.id;
-      removeTask(taskId);
+      tasks = tasks.filter((removeTask) => removeTask.id !== parseInt(taskId));
+      localStorage.setItem("tasks", JSON.stringify(tasks)); // in storage speichern
+      document.getElementById(taskId).remove(); // gewählte ID aus dem DOM löschen
     });
   });
 }
 
-/* FUNCTION REMOVE */
-function removeTask(taskId) {
-  tasks = tasks.filter((removeTask) => removeTask.id !== parseInt(taskId));
-  localStorage.setItem("tasks", JSON.stringify(tasks)); // in storage speichern
-  document.getElementById(taskId).remove(); // gewählte ID aus dem DOM löschen
+/*    FUNCTION - ON STAGE (SAVE + DISPLAY WRAPPER)
+========================================================================== */
+function onStateChange() {
+  //    Save to localstorage
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  display();
 }
-/* FILTER - EVENT LISTENER */
-const filterRadios = document.querySelectorAll('input[name="filter"]');
-filterRadios.forEach((radio) => {
-  radio.addEventListener("change", function () {
-    currentFilter = this.value;
-    display();
-  });
-});
 
-loadtasks();
 onStateChange();
