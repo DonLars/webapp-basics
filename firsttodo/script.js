@@ -45,7 +45,7 @@ taskForm.addEventListener("submit", (event) => {
       });
 
       // Render state
-      onStateChange();
+      render();
 
       input.value = ""; // Clear input field
       input.focus(); // Focus input field for the next task
