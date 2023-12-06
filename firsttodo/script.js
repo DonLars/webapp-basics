@@ -8,18 +8,17 @@ const taskList = document.getElementById("task-list"); // reference to task list
 const clearButton = document.getElementById("clear-btn"); // reference to clear button
 const claim = document.querySelector(".claim"); // reference to claim
 let currentFilter = "all"; // "all", "done", "open"
-let tasks = JSON.parse(localStorage.getItem("tasks")) || []; // load tasks from local storage OR set a new array
-getTimeId = new Date().getTime(); // Get time for create an id
+let tasks = JSON.parse(localStorage.getItem("tasks")) || []; // load tasks from localStorage OR set a new array
 
-// Add a default "testTodo" if there are no tasks in local storage
+// Add a default "testTodo" if there are no tasks in localSstorage
 if (tasks.length === 0) {
   const testTodo = {
-    id: getTimeId,
+    id: new Date().getTime(), // get time for create an id
     description: "Start your first task 😜",
     isDone: false,
   };
-  tasks.push(testTodo); // added testTodo
-  localStorage.setItem("tasks", JSON.stringify(tasks));
+  tasks.push(testTodo); // push into tasks
+  localStorage.setItem("tasks", JSON.stringify(tasks)); // save to localStorage
 }
 
 /*    EVENT LISTENER - SUBMIT BUTTON
@@ -37,18 +36,18 @@ taskForm.addEventListener("submit", (event) => {
     alert("Sorry, you can't add a duplicate task!");
   } else {
     if (input.value.trim() !== "") {
-      // if field is NOT clear update State
+      // if field is NOT clear update state
       tasks.push({
-        id: getTimeId,
-        description: input.value.trim(), // Get input field, trim whitespaces before and after
-        isDone: false,
+        id: new Date().getTime(), // get time for create an id
+        description: input.value.trim(), // get input field, trim whitespaces before and after
+        isDone: false, // set complete status to false
       });
 
       // Render state
       onStateChange();
 
-      input.value = ""; // Clear input field
-      input.focus(); // Focus on input field for the next task
+      input.value = ""; // clear input field
+      input.focus(); // focus on input field for the next task
     } else {
       return; // do nothing
     }
@@ -77,7 +76,7 @@ clearButton.addEventListener("click", function () {
 /*    FUNCTION - DISPLAY
 ========================================================================== */
 function display() {
-  taskList.innerHTML = ""; // Clear taskList
+  taskList.innerHTML = ""; // clear taskList
 
   // Filter
   const filteredTodos = tasks.filter((task) => {
@@ -87,7 +86,7 @@ function display() {
     if (currentFilter == "open") {
       return !task.isDone; // set task to NOT isDone
     }
-    return true; // all
+    return true; // unfiltered tasks
   });
 
   // Building list element with for each
@@ -103,7 +102,7 @@ function display() {
       <label for="checkbox-${task.id}">${task.description}</label>
       </div>
       <button class="delete-task" id="${task.id}">X</button>
-      `; // add HTML template with the complete list item, checkbox, label, delete Button
+    `; // add HTML template with the complete list item, checkbox, label, delete Button
 
     taskList.append(listItem); // append to UL List
   });
@@ -115,10 +114,10 @@ function display() {
       const taskId = parseInt(checkbox.id.replace("checkbox-", "")); // remove checkbox prefix
       const currentTask = tasks.find((task) => task.id === taskId); // find in tasks the current Task by compare the IDs
 
-      // Changes for checkboxes
+      // Änderungen für Checkboxen
       currentTask.isDone = checkbox.checked; // set current Task to the checked checkbox
 
-      onStateChange(); // Save in localStorage and update the display
+      onStateChange(); // save in localStorage and update the display
     });
   });
 
@@ -129,7 +128,7 @@ function display() {
     button.addEventListener("click", () => {
       const taskId = button.id;
       tasks = tasks.filter((removeTask) => removeTask.id !== parseInt(taskId));
-      localStorage.setItem("tasks", JSON.stringify(tasks)); // Save to localStorage
+      localStorage.setItem("tasks", JSON.stringify(tasks)); // save to localStorage
       document.getElementById(taskId).remove(); // delete choosen ID from DOM
     });
   });
@@ -138,8 +137,8 @@ function display() {
 /*    FUNCTION - ON STAGE (SAVE + DISPLAY WRAPPER)
 ========================================================================== */
 function onStateChange() {
-  console.log("onStateChange called"); // Testing
-  localStorage.setItem("tasks", JSON.stringify(tasks)); // Save to localStorage
+  //    Save to localstorage
+  localStorage.setItem("tasks", JSON.stringify(tasks)); // save to localStorage
   display();
   currentTaskCount();
 }
@@ -148,14 +147,14 @@ function onStateChange() {
 ========================================================================== */
 
 function currentTaskCount() {
-  const openTasks = tasks.filter((task) => !task.isDone); // Filter all tasks, if not isDone
+  const openTasks = tasks.filter((task) => !task.isDone); // filter all tasks, if not isDone
 
   if (openTasks.length > 0) {
-    claim.textContent = `Getting ${openTasks.length} things done…`; // Update the counter
+    claim.textContent = `Getting ${openTasks.length} things done…`; // update frontend claim
   } else {
     claim.textContent = `Great, all tasks are completed!`;
   }
 }
 
-onStateChange(); // Initial call to set up the initial state
-currentTaskCount(); // Initial call to set up the initial count
+onStateChange(); // initial call to set up the initial state
+currentTaskCount(); // initial call to set up the initial count
