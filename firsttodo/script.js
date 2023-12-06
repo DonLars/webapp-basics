@@ -10,7 +10,7 @@ const claim = document.querySelector(".claim"); // reference to claim
 let currentFilter = "all"; // "all", "done", "open"
 let tasks = JSON.parse(localStorage.getItem("tasks")) || []; // load tasks from localStorage OR set a new array
 
-// Add a default "testTodo" if there are no tasks in localSstorage
+// Add a default "testTodo" if there are no tasks in localStorage
 if (tasks.length === 0) {
   const testTodo = {
     id: new Date().getTime(), // get time for create an id

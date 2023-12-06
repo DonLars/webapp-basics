@@ -41,6 +41,7 @@ main {
   background: black;
   border-radius: 1rem;
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.2);
+  margin-top: 2rem;
 }
 
 #task-form {
@@ -66,7 +67,10 @@ main {
   border: 5px solid var(--gradient2-color);
   color: var(--black-color);
   font-size: 2rem;
-  transition: 0.5s;
+}
+
+.task-item:has(input[type="checkbox"]:checked) {
+  opacity: 0.4;
 }
 
 .checkbox-wrapper {
@@ -88,10 +92,7 @@ input[type="checkbox"]:checked + label {
   font-style: italic;
   color: var(--gradient1-color);
   flex-grow: 1;
-}
-
-.task-item:has(input[type="checkbox"]:checked) {
-  opacity: 0.4;
+  opacity: 1;
 }
 
 input {
@@ -187,6 +188,9 @@ input[type="radio"] {
 
   display: grid;
   place-content: center;
+}
+input[type="radio"]:hover {
+  border: 5px solid var(--gradient2-color);
 }
 
 input[type="radio"]::before {
