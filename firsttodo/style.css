@@ -67,10 +67,7 @@ main {
   border: 5px solid var(--gradient2-color);
   color: var(--black-color);
   font-size: 2rem;
-}
-
-.task-item:has(input[type="checkbox"]:checked) {
-  opacity: 0.4;
+  transition: 0.5s;
 }
 
 .checkbox-wrapper {
@@ -92,7 +89,10 @@ input[type="checkbox"]:checked + label {
   font-style: italic;
   color: var(--gradient1-color);
   flex-grow: 1;
-  opacity: 1;
+}
+
+.task-item:has(input[type="checkbox"]:checked) {
+  opacity: 0.4;
 }
 
 input {
