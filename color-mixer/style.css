@@ -1,0 +1,21 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+}
+header {
+  background: #cbd9ed;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+main {
+  flex: auto;
+}

@@ -64,11 +64,13 @@ filterRadios.forEach((radio) => {
   });
 });
 
-/*    EVENT LISTENER - CLEAR ALL
+/*    EVENT LISTENER - CLEAR DONE TASKS
 ========================================================================== */
 clearButton.addEventListener("click", function () {
   if (confirm("Do you really want to delete the complete list?")) {
-    tasks = []; // clear complete array after alert windows
+    //tasks = []; // clear complete array after alert windows
+    tasks = tasks.filter((task) => !task.isDone);
+    localStorage.setItem("tasks", JSON.stringify(tasks)); // save to localStorage
   }
   onStateChange();
 });
