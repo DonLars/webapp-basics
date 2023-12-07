@@ -54,7 +54,7 @@ taskForm.addEventListener("submit", (event) => {
   }
 });
 
-/*    EVENT LISTENER - FILTER
+/*    EVENT LISTENER - FILTERING
 ========================================================================== */
 const filterRadios = document.querySelectorAll('input[name="filter"]'); // select radio inputs
 filterRadios.forEach((radio) => {
