@@ -1,39 +1,26 @@
 "use strict";
 const main = document.getElementById("main");
-const hex = document.getElementById("hex");
+const rgb = document.getElementById("rgb");
 
-const red = document.getElementById("red");
-const green = document.getElementById("green");
-const blue = document.getElementById("blue");
+const redInput = document.getElementById("red");
+const greenInput = document.getElementById("green");
+const blueInput = document.getElementById("blue");
 
-//const colors = document.querySelectorAll(".mixer-range");
+const colors = document.querySelectorAll('[name="mixer-range"]');
 
-main.textContent = "Main";
-hex.textContent = "Hex";
+function updateBackgroundColor() {
+  const redValue = redInput.value;
+  const greenValue = greenInput.value;
+  const blueValue = blueInput.value;
 
-red.addEventListener("change", (event) => {
-  red = red.value;
-  return;
-});
-
-green.addEventListener("change", (event) => {
-  green = green.value;
-});
-
-blue.addEventListener("change", (event) => {
-  blue = blue.value;
-});
-
-function updateTextInput(val) {
-  document.getElementById("red").value = val;
+  const backgroundColor = `rgb(${redValue},${greenValue},${blueValue})`;
+  main.style.backgroundColor = backgroundColor;
+  rgb.textContent = backgroundColor;
 }
+redInput.addEventListener("input", updateBackgroundColor);
+greenInput.addEventListener("input", updateBackgroundColor);
+blueInput.addEventListener("input", updateBackgroundColor);
 
-main.style.backgroundColor = "rgb('red + green + blue)";
+main.style.backgroundColor = "hotpink";
 
-/* for (let color of colors) {
- */
-
-/* input.addEventListener("input", (event) => {
-  value.textContent = event.target.value;
-});
- */
+updateBackgroundColor();
