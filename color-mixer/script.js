@@ -6,8 +6,6 @@ const redInput = document.getElementById("red");
 const greenInput = document.getElementById("green");
 const blueInput = document.getElementById("blue");
 
-const colors = document.querySelectorAll('[name="mixer-range"]');
-
 function updateBackgroundColor() {
   const redValue = redInput.value;
   const greenValue = greenInput.value;
@@ -23,4 +21,8 @@ blueInput.addEventListener("input", updateBackgroundColor);
 
 main.style.backgroundColor = "hotpink";
 
-updateBackgroundColor();
+const picked = document.querySelector(".mixer-range");
+
+if (picked) {
+  updateBackgroundColor();
+}

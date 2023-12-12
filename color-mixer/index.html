@@ -9,36 +9,42 @@
   <body>
     <header>
       <form id="form">
-        <input
-          class="mixer-range"
-          type="range"
-          id="red"
-          name="mixer-range"
-          step="1"
-          min="0"
-          max="255"
-        />
-        <label for="red">red</label>
-        <input
-          class="mixer-range"
-          type="range"
-          id="green"
-          name="mixer-range"
-          step="1"
-          min="0"
-          max="255"
-        />
-        <label for="green">green</label>
-        <input
-          class="mixer-range"
-          type="range"
-          id="blue"
-          name="mixer-range"
-          step="1"
-          min="0"
-          max="255"
-        />
-        <label for="blue">blue</label>
+        <label for="red"
+          ><span>red</span>
+          <input
+            class="mixer-range"
+            type="range"
+            id="red"
+            name="mixer-range"
+            step="1"
+            min="0"
+            max="255"
+            value="50"
+        /></label>
+        <label for="green"
+          ><span>green</span>
+          <input
+            class="mixer-range"
+            type="range"
+            id="green"
+            name="mixer-range"
+            step="1"
+            min="0"
+            max="255"
+            value="100"
+        /></label>
+        <label for="blue"
+          ><span>blue</span>
+          <input
+            class="mixer-range"
+            type="range"
+            id="blue"
+            name="mixer-range"
+            step="1"
+            min="0"
+            max="255"
+            value="150"
+        /></label>
       </form>
       <section id="rgb">
         <!-- dynamic -->
