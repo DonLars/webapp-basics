@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clock</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <section class="analog">
+        <div class="circle">
+          <div class="analog-hours"></div>
+          <div class="analog-minutes"></div>
+          <div class="analog-seconds"></div>
+          <div class="circle-center"></div>
+          <div class="circle-outer"></div>
+          <div class="clock-ticks">
+            <div class="ticks tick-one"></div>
+            <div class="ticks tick-two"></div>
+            <div class="ticks tick-three"></div>
+            <div class="ticks tick-four"></div>
+          </div>
+          <ul>
+            <li>3</li>
+            <li>6</li>
+            <li>9</li>
+            <li>12</li>
+          </ul>
+        </div>
+      </section>
+      <section class="digital">
+        <time datetime="00:00:00"
+          ><span class="digital-hours">00</span><span class="spacer">:</span
+          ><span class="digital-minutes">00</span><span class="spacer">:</span
+          ><span class="digital-seconds">00</span></time
+        >
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

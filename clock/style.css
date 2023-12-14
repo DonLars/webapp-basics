@@ -1,0 +1,176 @@
+html,
+body {
+  font-family: monospace;
+  background-image: radial-gradient(rgb(0, 0, 0), rgb(80, 0, 186) 70%);
+  box-sizing: border-box;
+}
+main {
+  font-size: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Digital */
+
+section {
+  border-radius: 1rem;
+  width: 70vw;
+  margin-bottom: 5rem;
+  padding: 3rem;
+  color: #fff;
+  text-align: center;
+}
+
+/* Analog dial */
+
+.circle {
+  position: relative;
+  width: 50vh;
+  height: 50vh;
+  background: white;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: -4px -4px 10px rgba(67, 67, 67, 0.5),
+    inset 4px 4px 10px rgba(0, 0, 0, 0.5),
+    inset -4px -4px 10px rgba(67, 67, 67, 0.5), 4px 4px 10px rgba(0, 0, 0, 0.3);
+  border: 3rem solid hotpink;
+}
+
+.circle > * {
+  position: absolute;
+}
+
+/* clock hands */
+
+.analog-hours {
+  width: 0.75rem;
+  height: 28%;
+  transform: rotate(var(--hours, 0deg)) translateY(-50%); /* set default value */
+  background: black;
+  border-radius: 1rem;
+  z-index: 2;
+}
+
+.analog-minutes {
+  width: 0.75rem;
+  height: 43%;
+  transform: rotate(var(--minutes, 0deg)) translateY(-50%); /* set default value */
+  background: black;
+  border-radius: 1rem;
+  z-index: 2;
+}
+
+.analog-seconds {
+  width: 0.25rem;
+  height: 43%13rem;
+  transform: rotate(var(--seconds, 0deg)) translateY(-50%); /* set default value */
+  background: purple;
+  border-radius: 1rem;
+  z-index: 2;
+}
+
+.circle-center {
+  width: 2rem;
+  height: 2rem;
+  background-color: purple;
+  border: 3px solid white;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+/* clock numbers */
+
+.circle ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 117%;
+  height: 117%;
+  border-radius: 50%;
+}
+
+.circle ul li {
+  position: absolute;
+  font-weight: bold;
+  font-size: 2rem;
+  color: white;
+}
+
+.circle ul li:nth-child(1) {
+  top: 47%;
+  right: 1%;
+  font-size: 26px;
+  color: purple;
+}
+.circle ul li:nth-child(2) {
+  top: 94%;
+  left: 48%;
+  font-size: 2rem;
+  color: purple;
+}
+
+.circle ul li:nth-child(3) {
+  top: 46%;
+  left: 1%;
+  font-size: 26px;
+  color: purple;
+}
+
+.circle ul li:nth-child(4) {
+  top: 0%;
+  left: 46.5%;
+  font-size: 26px;
+  color: purple;
+}
+
+.circle-outer {
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  background: white;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.clock-ticks {
+  width: 50%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.clock-ticks::after {
+  transform: rotate(90deg);
+}
+
+.clock-ticks::after,
+.clock-ticks::before,
+.clock-ticks .ticks {
+  content: "";
+  position: absolute;
+  width: 0.05em;
+  height: 100%;
+  background: black;
+  z-index: 0;
+  left: 49%;
+}
+
+.clock-ticks .ticks.tick-one {
+  transform: rotate(30deg);
+}
+
+.clock-ticks .ticks.tick-two {
+  transform: rotate(60deg);
+}
+
+.clock-ticks .ticks.tick-three {
+  transform: rotate(120deg);
+}
+
+.clock-ticks .ticks.tick-four {
+  transform: rotate(150deg);
+}
