@@ -67,7 +67,7 @@ section {
 
 .analog-seconds {
   width: 0.25rem;
-  height: 43%13rem;
+  height: 43%;
   transform: rotate(var(--seconds, 0deg)) translateY(-50%); /* set default value */
   background: purple;
   border-radius: 1rem;
