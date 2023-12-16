@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Password Checker</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Password Check</h1>
+      <section>
+        <article class="formular">
+          <form id="form">
+            <input
+              class="first-input-password"
+              type="password"
+              id="first-password"
+            />
+            <input
+              class="second-input-password"
+              type="password"
+              id="second-password"
+            />
+            <button class="btn" type="button">Show Passwords</button>
+          </form>
+        </article>
+        <article class="check">
+          <p>Passwords are equal <span class="check-equal">❌</span></p>
+          <p>Lower Case letters <span class="check-lower">❌</span></p>
+          <p>Upper Case Letters <span class="check-upper">❌</span></p>
+          <p>Contains Numbers <span class="check-number">❌</span></p>
+          <p>
+            At least 10 characters long <span class="check-length">❌</span>
+          </p>
+        </article>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

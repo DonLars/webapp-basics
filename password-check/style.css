@@ -1,0 +1,103 @@
+/* lobster-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Lobster";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/lobster-v30-latin-regular.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* open-sans-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/open-sans-v36-latin-regular.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* open-sans-500 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 500;
+  src: url("../fonts/open-sans-v36-latin-500.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+html,
+body {
+  background: lightsalmon;
+  font-family: "Open Sans", arial, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Lobster", serif;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0.2rem 0.2rem 0 #000;
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+section {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+}
+
+@media screen and (width < 700px) {
+  section {
+    margin: 2rem;
+    display: block;
+  }
+}
+
+article.check {
+  padding-inline: 2rem;
+}
+
+article.check p {
+  width: 100%;
+  position: relative;
+  padding-right: 1rem;
+}
+article.check span {
+  position: absolute;
+  right: 0;
+  width: 1rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+button,
+input {
+  border: 3px solid #000;
+  border-radius: 4px;
+  padding: 1rem 2rem;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+button.btn {
+  appearance: none;
+  border: 0;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+
+  &:hover {
+    background: #222;
+  }
+}
