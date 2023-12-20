@@ -4,8 +4,10 @@
 ========================================================================== */
 const taskForm = document.getElementById("task-form"); // reference to form
 const input = document.getElementById("input"); // reference to inputfield
+const deleteButtons = document.querySelectorAll(".delete-task");
 const taskList = document.getElementById("task-list"); // reference to task list
 const clearButton = document.getElementById("clear-btn"); // reference to clear button
+const checkboxes = document.querySelectorAll(".toggle-complete"); // get all checkboxes
 const claim = document.querySelector(".claim"); // reference to claim
 
 /*    SETTING UP STATE
@@ -16,23 +18,23 @@ const state = {
 };
 
 // Add a default "testTodo" if there are no tasks in localStorage
-if (state.tasks.length === 0) {
+if (state.tasks.length === 0 && localStorage.getItem("tasks") === null) {
   const testTodo = {
-    id: new Date().getTime(), // get time for create an id
+    id: new Date().getTime(),
     description: "Start your first task 😜",
     isDone: false,
   };
-  state.tasks.push(testTodo); // push into tasks
+  state.tasks.push(testTodo);
   saveTodosToLocalStorage();
 }
 
 /*    FUNCTION - LOAD TODOS FROM LOCAL STORAGE
 ========================================================================== */
 function getTodosFromLocalStorage() {
-  if (localStorage.getItem("tasks")) {
-    state.tasks = JSON.parse(localStorage.getItem("tasks"));
-  }
-  //state.tasks = JSON.parse(localStorage.getItem("tasks")) ?? []; // load tasks from localStorage OR set a new array
+  // if (localStorage.getItem("tasks")) {
+  //   state.tasks = JSON.parse(localStorage.getItem("tasks"));
+  // }
+  state.tasks = JSON.parse(localStorage.getItem("tasks")) ?? []; // load tasks from localStorage OR set a new array
 }
 
 /*    FUNCTION - SAVE TODOS TO LOCAL STORAGE
@@ -63,6 +65,7 @@ function generateTodoItemTemplate(task) {
     } else {
       checkbox.removeAttribute("checked");
     }
+    saveTodosToLocalStorage();
   });
 
   const label = document.createElement("label");
@@ -113,35 +116,6 @@ taskForm.addEventListener("submit", (event) => {
   }
 });
 
-// EVENTLISTENER - CHECKBOXES
-const checkboxes = document.querySelectorAll(".toggle-complete"); // get all checkboxes
-checkboxes.forEach((checkbox) => {
-  checkbox.addEventListener("change", () => {
-    const taskId = parseInt(checkbox.id.replace("checkbox-", "")); // remove checkbox prefix
-    const currentTask = state.tasks.find((task) => task.id === taskId); // find in tasks the current Task by compare the IDs
-
-    // Änderungen für Checkboxen
-    currentTask.isDone = checkbox.checked; // set current Task to the checked checkbox
-
-    saveTodosToLocalStorage(); // save in localStorage and update the display
-    render();
-  });
-});
-
-/*    EVENT-LISTENER - REMOVE BUTTON
-========================================================================== */
-const deleteButtons = document.querySelectorAll(".delete-task");
-deleteButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const taskId = button.id;
-    state.tasks = state.tasks.filter(
-      (removeTask) => removeTask.id !== parseInt(taskId)
-    );
-    localStorage.setItem("tasks", JSON.stringify(state.tasks)); // save to localStorage
-    document.getElementById(taskId).remove(); // delete choosen ID from DOM
-  });
-});
-
 /*    FUNCTION - RENDER DATA FROM STAGE
 ========================================================================== */
 function render() {
@@ -151,6 +125,7 @@ function render() {
     const newTodoItem = generateTodoItemTemplate(task);
     taskList.appendChild(newTodoItem);
   }
+
   saveTodosToLocalStorage();
 }
 
