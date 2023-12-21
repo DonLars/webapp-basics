@@ -128,9 +128,10 @@ function display() {
   const deleteButtons = document.querySelectorAll(".delete-task");
   deleteButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      const taskId = button.id;
-      tasks = tasks.filter((removeTask) => removeTask.id !== parseInt(taskId));
-      localStorage.setItem("tasks", JSON.stringify(tasks)); // save to localStorage
+      const taskId = button.id; // Get id of the currently clicked "delete" button and save it to taskId
+      tasks = tasks.filter((removeTask) => removeTask.id !== parseInt(taskId)); // filter tasks array, keeping only tasks whose id is not equal to the clicked buttons id
+
+      localStorage.setItem("tasks", JSON.stringify(tasks)); // save tasks to localStorage
       document.getElementById(taskId).remove(); // delete choosen ID from DOM
     });
   });
