@@ -57,9 +57,12 @@ function generateTodoItemTemplate(task) {
   checkbox.id = "checkbox-" + task.id;
   checkbox.classList.add("toggle-complete");
 
+  checkbox.checked = task.isDone; // set "checked" attribut based on task.isDone
+
   // Event-Listener für das Ändern des Checkbox-Status hinzufügen
   checkbox.addEventListener("change", function () {
     task.isDone = checkbox.checked;
+
     if (checkbox.checked) {
       checkbox.setAttribute("checked", "");
     } else {
@@ -116,12 +119,42 @@ taskForm.addEventListener("submit", (event) => {
   }
 });
 
+/*    EVENT LISTENER - FILTERING
+========================================================================== */
+const filterRadios = document.querySelectorAll('input[name="filter"]'); // select radio inputs
+filterRadios.forEach((radio) => {
+  radio.addEventListener("change", function () {
+    state.currentFilter = this.value; // set currentfilter to this value
+    render();
+  });
+});
+
+/*    EVENT LISTENER - CLEAR DONE TASKS
+========================================================================== */
+clearButton.addEventListener("click", function () {
+  if (confirm("Do you really want to delete the complete list?")) {
+    state.tasks = state.tasks.filter((task) => !task.isDone);
+    render();
+  }
+});
+
 /*    FUNCTION - RENDER DATA FROM STAGE
 ========================================================================== */
 function render() {
   taskList.innerHTML = "";
 
-  for (const task of state.tasks) {
+  // Filtering
+  const filteredTodos = state.tasks.filter((task) => {
+    if (state.currentFilter == "done") {
+      return task.isDone; // set task to isDone
+    }
+    if (state.currentFilter == "open") {
+      return !task.isDone; // set task to NOT isDone
+    }
+    return true; // unfiltered tasks
+  });
+
+  for (const task of filteredTodos) {
     const newTodoItem = generateTodoItemTemplate(task);
     taskList.appendChild(newTodoItem);
   }
