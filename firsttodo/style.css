@@ -141,6 +141,7 @@ input[type="checkbox"] {
   display: grid;
   place-content: center;
   height: 5rem;
+  cursor: pointer;
 }
 
 input[type="checkbox"]::before {
