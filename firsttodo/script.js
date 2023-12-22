@@ -211,8 +211,6 @@ function onStateChange() {
   currentTaskCount();
 }
 
-=======
->>>>>>> refactoring
 /*    COUNT OPEN TASK - FUNCTION
 ========================================================================== */
 
