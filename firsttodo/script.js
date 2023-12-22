@@ -139,7 +139,6 @@ clearButton.addEventListener("click", function () {
   }
 });
 
-<<<<<<< HEAD
 /*    FUNCTION - DISPLAY
 ========================================================================== */
 function display() {
