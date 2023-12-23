@@ -34,18 +34,15 @@ function generateTemplate(userData) {
   return tr;
 }
 
-/*
-  document.querySelector("tbody").appendChild(
-    generateTemplate({
-      name: "Maria",
-      username: "maria123",
-      email: "me@maria123.com",
-    })
-  );
-  
-  document.querySelector("tbody").appendChild(
-    
-  );*/
+document.querySelector("tbody").appendChild(
+  generateTemplate({
+    name: "Maria",
+    username: "maria123",
+    email: "me@maria123.com",
+  })
+);
+
+document.querySelector("tbody").appendChild();
 
 function render() {
   for (const userData of state.users) {

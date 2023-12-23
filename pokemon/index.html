@@ -22,21 +22,18 @@
     />
 
     <!-- You should properly set the path from the main file. -->
-    <title>Multipage</title>
+    <title>Document</title>
   </head>
   <body>
     <main class="container">
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Username</th>
-            <th>E-Mail</th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <h1>Pokemon</h1>
+      <select id="limit">
+        <option value="10">10</option>
+        <option value="30">30</option>
+        <option value="50">50</option>
+      </select>
+      <ul class="list"></ul>
+      <button id="next-btn">get more</button>
     </main>
     <script src="script.js"></script>
   </body>
