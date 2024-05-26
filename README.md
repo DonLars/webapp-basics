@@ -12,4 +12,5 @@
 * https://donlars.github.io/webapp-basics/password-toggle
 * https://donlars.github.io/webapp-basics/pokemon
 * https://donlars.github.io/webapp-basics/todo-livecoding
-* * https://donlars.github.io/webapp-basics/todoapp
+* https://donlars.github.io/webapp-basics/todoapp
+* https://donlars.github.io/webapp-basics/vocabular
